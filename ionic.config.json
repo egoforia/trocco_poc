@@ -1,6 +1,6 @@
 {
   "name": "trocco_poc",
-  "app_id": "",
+  "app_id": "b061bb08",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
