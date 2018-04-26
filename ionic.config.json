@@ -1,8 +1,8 @@
 {
-  "name": "trocco_poc",
-  "app_id": "b061bb08",
-  "type": "ionic-angular",
+  "name": "foodIonic",
+  "app_id": "ef622600",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "type": "ionic-angular"
 }

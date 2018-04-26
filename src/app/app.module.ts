@@ -1,39 +1,57 @@
-import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+import { foodIonicApp } from './app.component';
+
+import { PipesModule } from '../pipes/pipes.module';
+
+import {MessageService} from "../providers/message-service-mock";
+import {RestaurantService} from "../providers/restaurant-service-mock";
+import {DishService} from "../providers/dish-service-mock";
+import {CategoryService} from "../providers/category-service-mock";
+import {CartService} from "../providers/cart-service-mock";
+import {OrdersService} from "../providers/orders-service-mock";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    foodIonicApp
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    HttpClientModule,
+    IonicModule.forRoot(foodIonicApp, {
+    	preloadModules: true,
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+    }),
+    IonicStorageModule.forRoot({
+      name: '__foodIonicDB',
+      driverOrder: ['indexeddb', 'sqlite', 'websql']
+    }),
+    PipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
+    foodIonicApp
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    Keyboard,
+    RestaurantService,
+    DishService,
+    CategoryService,
+    MessageService,
+    CartService,
+    OrdersService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
