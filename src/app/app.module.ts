@@ -19,6 +19,24 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
 
+import { Firebase } from '@ionic-native/firebase';
+
+import { AngularFireModule } from 'angularfire2';
+// for AngularFireDatabase
+import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
+// for AngularFireAuth
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
+  authDomain: "trocco-ea3f1.firebaseapp.com",
+  databaseURL: "https://trocco-ea3f1.firebaseio.com",
+  projectId: "trocco-ea3f1",
+  storageBucket: "trocco-ea3f1.appspot.com",
+  messagingSenderId: "15700150803"
+};
+
 @NgModule({
   declarations: [
     foodIonicApp
@@ -36,7 +54,10 @@ import { Keyboard } from '@ionic-native/keyboard';
       name: '__foodIonicDB',
       driverOrder: ['indexeddb', 'sqlite', 'websql']
     }),
-    PipesModule
+    PipesModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule,
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,7 +73,9 @@ import { Keyboard } from '@ionic-native/keyboard';
     MessageService,
     CartService,
     OrdersService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Firebase,
+    AngularFireDatabase,
   ]
 })
 export class AppModule {}

@@ -3,6 +3,11 @@ import {Nav, Platform} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 
+import { Firebase } from '@ionic-native/firebase';
+
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+
 export interface MenuItem {
     title: string;
     component: any;
@@ -37,8 +42,11 @@ export class foodIonicApp {
 
     helpMenuItems: Array<MenuItem>;
 
-    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+    items: Observable<any[]>;
+
+    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public firebase: Firebase, public afDB: AngularFireDatabase) {
         this.initializeApp();
+        this.initializeFirebase();
 
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
@@ -85,6 +93,29 @@ export class foodIonicApp {
 	      this.tabsPlacement = 'top';
 	      this.tabsLayout = 'icon-left';
 	    }
+    }
+
+    initializeFirebase() {
+      this.firebase.getToken()
+        .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
+        .catch(error => console.error('Error getting token', error));
+
+      // this.firebase.database().ref('estabelecimento').on('value', (snapshot) => {
+      //   console.log(snapshot.val());
+      // });
+
+      // this.items = this.afDB.object('estabelecimento').valueChanges();
+      // console.log(this.items);
+
+      // this.items = this.afDB.object('estabelecimento');
+      // this.items.snapshotChanges().subscribe(action => {
+      //   console.log(action.type);
+      //   console.log(action.key)
+      //   console.log(action.payload.val())
+      // });
+      this.afDB.object('estabelecimento').valueChanges().subscribe(action => {
+        console.log(action)
+      });
     }
 
     openPage(page) {
