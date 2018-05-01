@@ -24,7 +24,7 @@ export class RestaurantListPage {
     map;
     markersGroup;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public service: RestaurantFireService, public toastCtrl: ToastController, public modalCtrl: ModalController, public config: Config) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public restaurantService: RestaurantFireService, public toastCtrl: ToastController, public modalCtrl: ModalController, public config: Config) {
         this.findAll();
         this.proptype = this.navParams.get('proptype') || "";
         this.from = this.navParams.get('from') || "";
@@ -40,9 +40,9 @@ export class RestaurantListPage {
     }
 
     openRestaurantDetail(restaurant: any) {
-  		this.navCtrl.push('page-restaurant-detail', {
-				'id': restaurant.id
-			});
+			this.restaurantService.setActive(restaurant);
+
+  		this.navCtrl.push('page-restaurant-detail');
     }
 
     favorite(restaurant) {
@@ -73,7 +73,7 @@ export class RestaurantListPage {
     }
 
     findAll() {
-    	this.restaurants = this.service.findAll();
+    	this.restaurants = this.restaurantService.findAll();
     }
 
     showMap() {

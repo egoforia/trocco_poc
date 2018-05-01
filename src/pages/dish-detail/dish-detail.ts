@@ -2,9 +2,10 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 
 // import {DishService} from '../../providers/dish-service-mock';
-import {CartService} from '../../providers/cart-service-mock';
+// import {CartService} from '../../providers/cart-service-mock';
 
 import { RestaurantFireService } from '../../providers/restaurant-fire-service'
+import { CartFireService } from '../../providers/cart-fire-service'
 import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
@@ -22,12 +23,11 @@ export class DishDetailPage {
   dish: any;
   qtd: number = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, /*public dishService: DishService, */public cartService: CartService, public restaurantService: RestaurantFireService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, /*public dishService: DishService, */public cartService: CartFireService, public restaurantService: RestaurantFireService) {
     this.id = this.navParams.get('id');
-		this.restaurant_id = this.navParams.get('restaurant_id');
+		// this.restaurant_id = this.navParams.get('restaurant_id');
 
-		this.restaurantService.getDish(this.restaurant_id, this.id).subscribe(dish => {
-			console.log('dish: ', dish);
+		this.restaurantService.getDish(this.id).subscribe(dish => {
 			this.dish = dish;
 		});
 
@@ -52,6 +52,15 @@ export class DishDetailPage {
     //   });
     //   toast.present(toast);
   	// });
+
+		this.cartService.addToCart(this.restaurant_id, dish, qtd).then(dish => {
+      let toast = this.toastCtrl.create({
+          message: 'Pedido adicionado ao carrinho',
+          cssClass: 'mytoast',
+          duration: 2000
+      });
+      toast.present(toast);
+  	});
   }
 
   openCart() {

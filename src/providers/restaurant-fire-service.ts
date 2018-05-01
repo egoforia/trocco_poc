@@ -9,6 +9,7 @@ export class RestaurantFireService {
   // favoriteCounter: number = 0;
   // favorites: Array<any> = [];
   restaurants: Observable<any>;
+  active: any = {"id": 1};
 
   constructor(private afDB: AngularFireDatabase) {
     this.restaurants = this.afDB.list('estabelecimentos').valueChanges();
@@ -37,8 +38,16 @@ export class RestaurantFireService {
 		// return null;
 	}
 
-  getDish(id, dish_id) {
-    return this.afDB.object(`estabelecimentos/${id}/dishes/${dish_id}`).valueChanges();
+  setActive(restaurant) {
+    this.active = restaurant;
+  }
+
+  getActive() {
+    return this.active;
+  }
+
+  getDish(dish_id) {
+    return this.afDB.object(`estabelecimentos/${this.active.id}/dishes/${dish_id}`).valueChanges();
   }
   //
   // findByName(searchKey: string) {

@@ -98,23 +98,6 @@ export class foodIonicApp {
       this.firebase.getToken()
         .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
         .catch(error => console.error('Error getting token', error));
-
-      // this.firebase.database().ref('estabelecimento').on('value', (snapshot) => {
-      //   console.log(snapshot.val());
-      // });
-
-      // this.items = this.afDB.object('estabelecimento').valueChanges();
-      // console.log(this.items);
-
-      // this.items = this.afDB.object('estabelecimento');
-      // this.items.snapshotChanges().subscribe(action => {
-      //   console.log(action.type);
-      //   console.log(action.key)
-      //   console.log(action.payload.val())
-      // });
-      this.afDB.object('estabelecimento').valueChanges().subscribe(action => {
-        console.log(JSON.stringify(action))
-      });
     }
 
     openPage(page) {

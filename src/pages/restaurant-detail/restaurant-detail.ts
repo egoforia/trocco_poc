@@ -29,19 +29,21 @@ export class RestaurantDetailPage {
     dishes: Array<any>;
 
     constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantFireService, public dishService: DishService, public toastCtrl: ToastController) {
-			this.param = this.navParams.get('id');
-			this.restaurantService.getItem(this.param).subscribe(restaurant => {
-				this.restaurant = restaurant;
-				this.dishes = restaurant.dishes;
-			});
+			// this.param = this.navParams.get('id');
+			// this.restaurantService.getItem(this.param).subscribe((restaurant: any) => {
+			// 	this.restaurant = restaurant;
+			// 	this.dishes = restaurant.dishes;
+			// });
+
+			this.restaurant = this.restaurantService.getActive();
+			this.dishes = this.restaurant.dishes;
 
       // this.dishes = this.dishService.findAll()
     }
 
     openDishDetail(dish, restaurant) {
       this.navCtrl.push('page-dish-detail', {
-				'id': dish.id,
-				'restaurant_id': restaurant.id
+				'id': dish.id
 			});
     }
 

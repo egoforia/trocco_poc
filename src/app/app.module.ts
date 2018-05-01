@@ -29,6 +29,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { RestaurantFireService } from "../providers/restaurant-fire-service";
+import { CartFireService } from "../providers/cart-fire-service";
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
@@ -78,7 +79,8 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Firebase,
     AngularFireDatabase,
-    RestaurantFireService
+    RestaurantFireService,
+    CartFireService
   ]
 })
 export class AppModule {}
