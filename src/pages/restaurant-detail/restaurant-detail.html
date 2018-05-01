@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content class="lightest-bg">
-  <ion-card *ngIf="restaurant.id" class="full-width" no-margin>
+  <ion-card *ngIf="restaurant" class="full-width" no-margin>
   	<div class="card-img-wrap">
       <span ion-text class="card-img-status fw700 text-white" [ngClass]="{'closed': restaurant.label === 'closed', 'open': restaurant.label === 'open'}">
         {{ restaurant.label }}
@@ -61,7 +61,7 @@
 					<div *ngSwitchCase="'menu'">
 
 						<ion-list>
-						  <ion-item no-padding *ngFor="let dish of dishes" tapplable (click)="openDishDetail(dish)">
+						  <ion-item no-padding *ngFor="let dish of dishes" tapplable (click)="openDishDetail(dish, restaurant)">
 						    <ion-thumbnail item-start>
 						      <img src="{{dish.picture}}">
 						    </ion-thumbnail>

@@ -58,7 +58,7 @@
   <div *ngIf="viewMode === 'list'">
 		<ion-grid no-padding>
 			<ion-row no-padding>
-				<ion-col col-12 col-md-6 *ngFor="let restaurant of restaurants | termSearch:proptype:'tags'">
+				<ion-col col-12 col-md-6 *ngFor="let restaurant of restaurants | async">
 
 		      <ion-card margin-bottom>
 		        <div class="card-img-wrap">
@@ -88,6 +88,7 @@
 			          	{{ restaurant.rating | number:'1.1' }}
 			          </ion-badge>
 		        </ion-card-content>
+            <!-- {{ restaurant | json }} -->
 		      </ion-card>
 
     		</ion-col>

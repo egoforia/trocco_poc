@@ -28,6 +28,8 @@ import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/dat
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import { RestaurantFireService } from "../providers/restaurant-fire-service";
+
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
   authDomain: "trocco-ea3f1.firebaseapp.com",
@@ -76,6 +78,7 @@ export const firebaseConfig = {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Firebase,
     AngularFireDatabase,
+    RestaurantFireService
   ]
 })
 export class AppModule {}

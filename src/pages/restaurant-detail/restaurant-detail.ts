@@ -1,9 +1,12 @@
 import {Component} from '@angular/core';
 import {IonicPage, ActionSheetController, ActionSheet, NavController, NavParams, ToastController} from 'ionic-angular';
 
-import {RestaurantService} from '../../providers/restaurant-service-mock';
+// import {RestaurantService} from '../../providers/restaurant-service-mock';
 import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
+
+import { RestaurantFireService } from '../../providers/restaurant-fire-service'
+import { Observable } from 'rxjs/Observable';
 
 import leaflet from 'leaflet';
 
@@ -25,29 +28,33 @@ export class RestaurantDetailPage {
     restaurantopts: String = 'menu';
     dishes: Array<any>;
 
-    constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantService, public dishService: DishService, public toastCtrl: ToastController) {
+    constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantFireService, public dishService: DishService, public toastCtrl: ToastController) {
 			this.param = this.navParams.get('id');
-			this.restaurant = this.restaurantService.getItem(this.param) ? this.restaurantService.getItem(this.param) : this.restaurantService.getRestaurants()[0];
+			this.restaurantService.getItem(this.param).subscribe(restaurant => {
+				this.restaurant = restaurant;
+				this.dishes = restaurant.dishes;
+			});
 
-      this.dishes = this.dishService.findAll()
+      // this.dishes = this.dishService.findAll()
     }
 
-    openDishDetail(dish) {
+    openDishDetail(dish, restaurant) {
       this.navCtrl.push('page-dish-detail', {
-				'id': dish.id
+				'id': dish.id,
+				'restaurant_id': restaurant.id
 			});
     }
 
     favorite(restaurant) {
-        this.restaurantService.favorite(restaurant)
-            .then(restaurant => {
-                let toast = this.toastCtrl.create({
-                    message: 'Restaurant added to your favorites',
-                    cssClass: 'mytoast',
-                    duration: 2000
-                });
-                toast.present(toast);
-            });
+      // this.restaurantService.favorite(restaurant)
+      //     .then(restaurant => {
+      //         let toast = this.toastCtrl.create({
+      //             message: 'Restaurant added to your favorites',
+      //             cssClass: 'mytoast',
+      //             duration: 2000
+      //         });
+      //         toast.present(toast);
+      //     });
     }
 
     share(restaurant) {

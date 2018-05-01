@@ -1,8 +1,11 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 
-import {DishService} from '../../providers/dish-service-mock';
+// import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
+
+import { RestaurantFireService } from '../../providers/restaurant-fire-service'
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
 	name: 'page-dish-detail',
@@ -14,13 +17,21 @@ import {CartService} from '../../providers/cart-service-mock';
     templateUrl: 'dish-detail.html'
 })
 export class DishDetailPage {
-	param: number;
+	id: number;
+	restaurant_id: number;
   dish: any;
   qtd: number = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public dishService: DishService, public cartService: CartService) {
-    this.param = this.navParams.get('id');
-  	this.dish = this.dishService.getItem(this.param) ? this.dishService.getItem(this.param) : this.dishService.findAll()[0];
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, /*public dishService: DishService, */public cartService: CartService, public restaurantService: RestaurantFireService) {
+    this.id = this.navParams.get('id');
+		this.restaurant_id = this.navParams.get('restaurant_id');
+
+		this.restaurantService.getDish(this.restaurant_id, this.id).subscribe(dish => {
+			console.log('dish: ', dish);
+			this.dish = dish;
+		});
+
+  	// this.dish = this.dishService.getItem(this.param) ? this.dishService.getItem(this.param) : this.dishService.findAll()[0];
   }
 
   // minus adult when click minus button
@@ -33,14 +44,14 @@ export class DishDetailPage {
   }
 
   addcart(dish, qtd) {
-  	this.cartService.addtoCart(dish, qtd).then(dish => {
-      let toast = this.toastCtrl.create({
-          message: 'Dish added to Cart',
-          cssClass: 'mytoast',
-          duration: 2000
-      });
-      toast.present(toast);
-  	});
+  	// this.cartService.addtoCart(dish, qtd).then(dish => {
+    //   let toast = this.toastCtrl.create({
+    //       message: 'Dish added to Cart',
+    //       cssClass: 'mytoast',
+    //       duration: 2000
+    //   });
+    //   toast.present(toast);
+  	// });
   }
 
   openCart() {

@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {IonicPage, Config, NavController, NavParams, ToastController, ModalController} from 'ionic-angular';
-import {RestaurantService} from '../../providers/restaurant-service-mock';
+// import {RestaurantService} from '../../providers/restaurant-service-mock';
+import { RestaurantFireService } from '../../providers/restaurant-fire-service'
+import { Observable } from 'rxjs/Observable';
 import leaflet from 'leaflet';
 
 @IonicPage({
@@ -14,7 +16,7 @@ import leaflet from 'leaflet';
 })
 export class RestaurantListPage {
 
-    restaurants: Array<any>;
+    restaurants: Observable<any>;
     searchKey: string = "";
     viewMode: string = "list";
     proptype: string;
@@ -22,7 +24,7 @@ export class RestaurantListPage {
     map;
     markersGroup;
 
-    constructor(public navCtrl: NavController, public navParams: NavParams, public service: RestaurantService, public toastCtrl: ToastController, public modalCtrl: ModalController, public config: Config) {
+    constructor(public navCtrl: NavController, public navParams: NavParams, public service: RestaurantFireService, public toastCtrl: ToastController, public modalCtrl: ModalController, public config: Config) {
         this.findAll();
         this.proptype = this.navParams.get('proptype') || "";
         this.from = this.navParams.get('from') || "";
@@ -39,41 +41,39 @@ export class RestaurantListPage {
 
     openRestaurantDetail(restaurant: any) {
   		this.navCtrl.push('page-restaurant-detail', {
-			'id': restaurant.id
-		});
+				'id': restaurant.id
+			});
     }
 
     favorite(restaurant) {
-        this.service.favorite(restaurant)
-            .then(restaurant => {
-                let toast = this.toastCtrl.create({
-                    message: 'Property added to your favorites',
-                    cssClass: 'mytoast',
-                    duration: 2000
-                });
-                toast.present(toast);
-            });
+        // this.service.favorite(restaurant)
+        //     .then(restaurant => {
+        //         let toast = this.toastCtrl.create({
+        //             message: 'Property added to your favorites',
+        //             cssClass: 'mytoast',
+        //             duration: 2000
+        //         });
+        //         toast.present(toast);
+        //     });
     }
 
     onInput(event) {
-        this.service.findByName(this.searchKey)
-            .then(data => {
-                this.restaurants = data;
-                if (this.viewMode === "map") {
-                    this.showMarkers();
-                }
-            })
-            .catch(error => alert(JSON.stringify(error)));
+        // this.service.findByName(this.searchKey)
+        //     .then(data => {
+        //         this.restaurants = data;
+        //         if (this.viewMode === "map") {
+        //             this.showMarkers();
+        //         }
+        //     })
+        //     .catch(error => alert(JSON.stringify(error)));
     }
 
     onCancel(event) {
-        this.findAll();
+      this.findAll();
     }
 
     findAll() {
-        this.service.findAll()
-            .then(data => this.restaurants = data)
-            .catch(error => alert(error));
+    	this.restaurants = this.service.findAll();
     }
 
     showMap() {

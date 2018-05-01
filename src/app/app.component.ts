@@ -51,7 +51,6 @@ export class foodIonicApp {
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
 
-
         this.appMenuItems = [
             {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},
             {title: 'Dish List', component: 'page-dish-list', icon: 'pizza'},
@@ -114,7 +113,7 @@ export class foodIonicApp {
       //   console.log(action.payload.val())
       // });
       this.afDB.object('estabelecimento').valueChanges().subscribe(action => {
-        console.log(action)
+        console.log(JSON.stringify(action))
       });
     }
 

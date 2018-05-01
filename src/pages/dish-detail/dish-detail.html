@@ -1,12 +1,12 @@
 <ion-header>
     <ion-navbar color="primary">
         <ion-title>
-            <span ion-text>{{dish.name}}</span>
+            <span *ngIf="dish" ion-text>{{dish.name}}</span>
         </ion-title>
     </ion-navbar>
 </ion-header>
 
-<ion-content class="dish lightest-bg">
+<ion-content *ngIf="dish" class="dish lightest-bg">
 
   <ion-card class="dish-card">
 
