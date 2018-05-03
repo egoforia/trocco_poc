@@ -34,22 +34,7 @@ export class CartPage {
   }
 
   getOrders () {
-		// this.orders = .subscribe();
-
-		this.cartService.getOrders().subscribe((orders: any) => {
-    	this.orders = orders;
-
-    	this.totalVal = 0;
-
-			for (let order of orders) {
-				order.dish = this.restaurantService.getDish(order.dish_id);
-				console.log(order);
-				// this.restaurantService.getDish(order.dish_id).subscribe(dish => {
-				// 	console.log(order, dish);
-				// 	order.dish = dish;
-				// });
-			}
-    });
+		this.orders = this.cartService.getOrders();
   }
 
 	// getDish (dish_id) {

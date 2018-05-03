@@ -8,6 +8,9 @@ import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+// import * as firebase from 'firebase/app';
+
 export interface MenuItem {
     title: string;
     component: any;
@@ -44,7 +47,14 @@ export class foodIonicApp {
 
     items: Observable<any[]>;
 
-    constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen, public firebase: Firebase, public afDB: AngularFireDatabase) {
+    constructor(
+      public platform: Platform,
+      public statusBar: StatusBar,
+      public splashScreen: SplashScreen,
+      public firebase: Firebase,
+      public afDB: AngularFireDatabase,
+      public afAuth: AngularFireAuth
+    ) {
         this.initializeApp();
         this.initializeFirebase();
 

@@ -6,22 +6,22 @@
 	    <ion-toolbar class="user-profile">
 
 	      <div class="user-profile">
-	        <ion-list no-margin>
-	          <ion-item>
+	        <ion-list no-margin >
+	          <ion-item style="height: 110px;">
 
-	            <ion-avatar item-left>
-	              <img src="assets/img/avatar.jpeg">
-	            </ion-avatar>
+		            <ion-avatar item-left *ngIf="(afAuth.authState | async) as user">
+		              <img src="{{ user.photoURL }}">
+		            </ion-avatar>
 
-	            <h2 ion-text class="text-white fw700 text-15x">
-	              João Firmino
-	            </h2>
-	            <p ion-text color="light">São Paulo, Brazil</p>
+		            <h2 ion-text class="text-white fw700 text-15x" *ngIf="(afAuth.authState | async) as user">
+	            		{{ user.displayName }}
+		            </h2>
+		            <!-- <p ion-text color="light">São Paulo, Brazil</p> -->
 
-					    <button ion-button icon-left round color="primary" menuClose (click)="openPage(accountMenuItems[1])">
-					      <ion-icon [name]="accountMenuItems[1].icon"></ion-icon>
-					      {{accountMenuItems[1].title}}
-					    </button>
+						    <button ion-button icon-left round color="primary" menuClose (click)="openPage(accountMenuItems[1])">
+						      <ion-icon [name]="accountMenuItems[1].icon"></ion-icon>
+						      {{accountMenuItems[1].title}}
+						    </button>
 
 	          </ion-item>
 	        </ion-list>

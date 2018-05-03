@@ -22,9 +22,9 @@
 				</ion-card>
 
 				<ion-list no-margin>
-					<ion-item-sliding *ngFor="let order of orders">
+					<ion-item-sliding *ngFor="let order of orders | async">
 							<div ion-item>
-                <div *ngIf="(order.dish | async) as dish">
+                <div *ngIf="order.dish | async; let dish; else loading">
 									<ion-thumbnail item-left>
 										<img src="{{dish.picture}}"/>
                     <h2 ion-text color="dark" class="fw700">
@@ -36,6 +36,7 @@
                     <ion-badge>{{ order.status }}</ion-badge>
 									</div>
                 </div>
+                <ng-template #loading><ion-spinner></ion-spinner></ng-template>
 							</div>
 					</ion-item-sliding>
 				</ion-list>

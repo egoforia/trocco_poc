@@ -31,6 +31,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { RestaurantFireService } from "../providers/restaurant-fire-service";
 import { CartFireService } from "../providers/cart-fire-service";
 
+import { Facebook } from '@ionic-native/facebook';
+
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
   authDomain: "trocco-ea3f1.firebaseapp.com",
@@ -80,7 +82,8 @@ export const firebaseConfig = {
     Firebase,
     AngularFireDatabase,
     RestaurantFireService,
-    CartFireService
+    CartFireService,
+    Facebook
   ]
 })
 export class AppModule {}

@@ -1,6 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {Nav, Platform} from 'ionic-angular';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 export interface MenuItem {
     title: string;
     component: any;
@@ -35,12 +38,17 @@ export class foodIonicApp {
 
     helpMenuItems: Array<MenuItem>;
 
-    constructor(public platform: Platform) {
+    user: firebase.User;
+
+    constructor(public platform: Platform, public afAuth: AngularFireAuth) {
         this.initializeApp();
+
+        this.user = afAuth.authState.subscribe(user => {
+          console.log(user);
+        });
 
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
-
 
         this.appMenuItems = [
             {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},

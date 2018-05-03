@@ -20,7 +20,12 @@ export class CartFireService {
   }
 
   getOrders() {
-    return this.orders.valueChanges();
+    return this.orders.valueChanges().map(orders => {
+      return orders.map((order: any) => {
+        order.dish = this.restaurantService.getDish(order.dish_id);
+        return order
+      });
+    });
   }
 
   removefromCart(order) {

@@ -17,6 +17,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 // import { AngularFireAuth } from 'angularfire2/auth';
 
+import { Facebook } from '@ionic-native/facebook';
+
 import {MessageService} from "../providers/message-service-mock";
 import {RestaurantService} from "../providers/restaurant-service-mock";
 import {DishService} from "../providers/dish-service-mock";
@@ -52,7 +54,8 @@ export const firebaseConfig = {
     PipesModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    Facebook
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -65,7 +68,7 @@ export const firebaseConfig = {
     MessageService,
     CartService,
 		OrdersService,
-    // AngularFireDatabase,
+    Facebook,
     // { provide: LocationStrategy, useClass: PathLocationStrategy },
     // { provide: APP_BASE_HREF, useValue : '/' },
     {provide: ErrorHandler, useClass: IonicErrorHandler}
