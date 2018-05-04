@@ -101,15 +101,7 @@ export class AuthPage implements OnInit {
 			this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
 			.catch(error => {
 				// show toast with error message
-				let toast = this.toastCtrl.create({
-					message: error.message,
-					duration: 3000,
-					position: 'middle',
-					cssClass: 'dark-trans',
-					closeButtonText: 'OK',
-					showCloseButton: true
-				});
-				toast.present();
+				this.toast(error.message);
 			})
 		}
   }
@@ -123,18 +115,12 @@ export class AuthPage implements OnInit {
 				userCredential.user.updateProfile({
 					displayName: form.value.fullName
 				});
+
+				userCredential.user.sendEmailVerification();
 			})
 			.catch(error => {
 				// show toast with error message
-				let toast = this.toastCtrl.create({
-					message: error.message,
-					duration: 3000,
-					position: 'middle',
-					cssClass: 'dark-trans',
-					closeButtonText: 'OK',
-					showCloseButton: true
-				});
-				toast.present();
+				this.toast(error.message);
 			})
 		}
 	}
@@ -160,21 +146,32 @@ export class AuthPage implements OnInit {
         {
           text: 'Send',
           handler: data => {
-            console.log('Send clicked');
-            let toast = this.toastCtrl.create({
-              message: 'Email was sended successfully',
-              duration: 3000,
-              position: 'top',
-              cssClass: 'dark-trans',
-              closeButtonText: 'OK',
-              showCloseButton: true
-            });
-            toast.present();
+						console.log(data);
+						this.afAuth.auth.sendPasswordResetEmail(data.email)
+							.then(() => {
+								this.toast("Verifique seu email.");
+							})
+							.catch(error => {
+								console.log(error);
+								this.toast(error.message);
+							});
           }
         }
       ]
     });
     forgot.present();
   }
+
+	toast(message) {
+		let toast = this.toastCtrl.create({
+			message: 	message,
+			duration: 3000,
+			position: 'middle',
+			cssClass: 'dark-trans',
+			closeButtonText: 'OK',
+			showCloseButton: true
+		});
+		toast.present();
+	}
 
 }
