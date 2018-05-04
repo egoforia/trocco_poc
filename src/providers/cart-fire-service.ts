@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { RestaurantFireService } from './restaurant-fire-service'
-import { Observable } from 'rxjs/Observable';
+import { RestaurantFireService } from './restaurant-fire-service';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class CartFireService {
@@ -10,8 +11,16 @@ export class CartFireService {
   orderCounter: number = 0;
   orders: AngularFireList<{}>;
 
-  constructor(private afDB: AngularFireDatabase, private restaurantService: RestaurantFireService) {
-    this.orders = this.afDB.list(`orders/${this.restaurantService.getActive().id}/user1`);
+  userId: String;
+
+  constructor(private afDB: AngularFireDatabase, private restaurantService: RestaurantFireService, private afAuth: AngularFireAuth) {
+    // async solution
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userId = user.uid
+        this.orders = this.afDB.list(`orders/${this.restaurantService.getActive().id}/${this.userId}`);
+      }
+    });
   }
 
   addToCart(restaurant_id, dish, quantity) {

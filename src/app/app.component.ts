@@ -9,7 +9,6 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
 import { AngularFireAuth } from 'angularfire2/auth';
-// import * as firebase from 'firebase/app';
 
 export interface MenuItem {
     title: string;
@@ -26,7 +25,7 @@ export class foodIonicApp {
   	tabsPlacement: string = 'bottom';
   	tabsLayout: string = 'icon-top';
 
-    rootPage: any = 'page-walkthrough';
+    rootPage: any;
     showMenu: boolean = true;
 
     homeItem: any;
@@ -57,6 +56,8 @@ export class foodIonicApp {
     ) {
         this.initializeApp();
         this.initializeFirebase();
+
+
 
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
@@ -93,10 +94,19 @@ export class foodIonicApp {
     }
 
     initializeApp() {
-        this.platform.ready().then(() => {
-            this.statusBar.overlaysWebView(false);
-            this.splashScreen.hide();
+      this.platform.ready().then(() => {
+        this.statusBar.overlaysWebView(false);
+
+        this.afAuth.authState.subscribe(user => {
+          console.log('authState subscribed user: ', JSON.stringify(user));
+          if (user)
+            this.rootPage = 'page-home';
+          else
+            this.rootPage = 'page-auth';
+
+          this.splashScreen.hide();
         });
+      });
 
 	    if (!this.platform.is('mobile')) {
 	      this.tabsPlacement = 'top';
@@ -114,5 +124,9 @@ export class foodIonicApp {
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
         this.nav.setRoot(page.component);
+    }
+
+    logout(page) {
+      this.afAuth.auth.signOut();
     }
 }

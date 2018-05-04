@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { IonicPage, NavController, AlertController, ToastController, MenuController, Platform } from 'ionic-angular';
+
+import { map, take, debounceTime } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
@@ -37,25 +39,29 @@ export class AuthPage implements OnInit {
 
   ngOnInit() {
     this.onLoginForm = this._fb.group({
-      email: ['', Validators.compose([
-        Validators.required
-      ])],
-      password: ['', Validators.compose([
-        Validators.required
-      ])]
+      'email': ['',
+        [ Validators.required,Validators.email ]
+      ],
+      'password': ['', [
+				Validators.required,
+				Validators.minLength(6),
+				Validators.maxLength(25)
+			]]
     });
 
-    this.onRegisterForm = this._fb.group({
-      fullName: ['', Validators.compose([
-        Validators.required
-      ])],
-      email: ['', Validators.compose([
-        Validators.required
-      ])],
-      password: ['', Validators.compose([
-        Validators.required
-      ])]
-    });
+		this.onRegisterForm = this._fb.group({
+		  'fullName': ['', Validators.compose([
+		    Validators.required
+		  ])],
+			'email': ['',
+				[ Validators.required,Validators.email ]
+			],
+			'password': ['', [
+				Validators.required,
+				Validators.minLength(6),
+				Validators.maxLength(25)
+			]]
+		});
   }
 
   // go to register page
@@ -70,7 +76,6 @@ export class AuthPage implements OnInit {
         return this.afAuth.auth
 					.signInWithCredential(facebookCredential)
 					.then(res => {
-						console.log('Login por facebook ok');
 						this.login();
 					})
 					.catch(error => {
@@ -81,7 +86,6 @@ export class AuthPage implements OnInit {
       return this.afAuth.auth
         .signInWithPopup(new firebase.auth.FacebookAuthProvider())
         .then(res => {
-					console.log(res)
 					this.login()
 				})
 				.catch(error => {
@@ -92,9 +96,48 @@ export class AuthPage implements OnInit {
 
   // login and go to home page
   login() {
-		console.log(this.afAuth.auth);
-    this.nav.setRoot('page-home');
+    const form = this.onLoginForm;
+		if (form.valid) {
+			this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
+			.catch(error => {
+				// show toast with error message
+				let toast = this.toastCtrl.create({
+					message: error.message,
+					duration: 3000,
+					position: 'middle',
+					cssClass: 'dark-trans',
+					closeButtonText: 'OK',
+					showCloseButton: true
+				});
+				toast.present();
+			})
+		}
   }
+
+	signup() {
+		const form = this.onRegisterForm;
+		if (form.valid) {
+			this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
+			.then(userCredential => {
+				// update user's displayName
+				userCredential.user.updateProfile({
+					displayName: form.value.fullName
+				});
+			})
+			.catch(error => {
+				// show toast with error message
+				let toast = this.toastCtrl.create({
+					message: error.message,
+					duration: 3000,
+					position: 'middle',
+					cssClass: 'dark-trans',
+					closeButtonText: 'OK',
+					showCloseButton: true
+				});
+				toast.present();
+			})
+		}
+	}
 
   forgotPass() {
     let forgot = this.forgotCtrl.create({

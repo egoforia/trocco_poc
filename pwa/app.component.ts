@@ -19,7 +19,7 @@ export class foodIonicApp {
   	tabsPlacement: string = 'bottom';
   	tabsLayout: string = 'icon-top';
 
-    rootPage: any = 'page-walkthrough';
+    rootPage: any;
     showMenu: boolean = true;
 
     homeItem: any;
@@ -41,44 +41,42 @@ export class foodIonicApp {
     user: firebase.User;
 
     constructor(public platform: Platform, public afAuth: AngularFireAuth) {
-        this.initializeApp();
+      this.initializeApp();
 
-        this.user = afAuth.authState.subscribe(user => {
-          console.log(user);
-        });
+      this.afAuth.authState.subscribe(user => {
+        this.rootPage = 'page-home';
+      });
 
-        this.homeItem = { component: 'page-home' };
-        this.messagesItem = { component: 'page-message-list'};
+      this.homeItem = { component: 'page-home' };
+      this.messagesItem = { component: 'page-message-list'};
 
-        this.appMenuItems = [
-            {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},
-            {title: 'Dish List', component: 'page-dish-list', icon: 'pizza'},
-            {title: 'Nearby', component: 'page-nearby', icon: 'compass'},
-            {title: 'By Category', component: 'page-category', icon: 'albums'},
-            {title: 'Latest Orders', component: 'page-orders', icon: 'list-box'},
-            {title: 'Cart', component: 'page-cart', icon: 'cart'},
-			{title: 'Favorite Restaurants', component: 'page-favorite-list', icon: 'heart'}
-        ];
+      this.appMenuItems = [
+        {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},
+        {title: 'Dish List', component: 'page-dish-list', icon: 'pizza'},
+        {title: 'Nearby', component: 'page-nearby', icon: 'compass'},
+        {title: 'By Category', component: 'page-category', icon: 'albums'},
+        {title: 'Latest Orders', component: 'page-orders', icon: 'list-box'},
+        {title: 'Cart', component: 'page-cart', icon: 'cart'},
+        {title: 'Favorite Restaurants', component: 'page-favorite-list', icon: 'heart'}
+      ];
 
-        this.yourRestaurantMenuItems = [
-            {title: 'Register Restaurant', component: 'page-your-restaurant', icon: 'clipboard'}
-        ];
+      this.yourRestaurantMenuItems = [
+        {title: 'Register Restaurant', component: 'page-your-restaurant', icon: 'clipboard'}
+      ];
 
+      this.accountMenuItems = [
+        {title: 'Login', component: 'page-auth', icon: 'log-in'},
+        {title: 'My Account', component: 'page-my-account', icon: 'contact'},
+        {title: 'Logout', component: 'page-auth', icon: 'log-out'},
+      ];
 
-        this.accountMenuItems = [
-            {title: 'Login', component: 'page-auth', icon: 'log-in'},
-            {title: 'My Account', component: 'page-my-account', icon: 'contact'},
-            {title: 'Logout', component: 'page-auth', icon: 'log-out'},
-        ];
-
-        this.helpMenuItems = [
-			{title: 'Extra Pages (with Animations)', component: 'page-custom-pages', icon: 'albums'},
-            {title: 'About', component: 'page-about', icon: 'information-circle'},
-            {title: 'Support', component: 'page-support', icon: 'call'},
-            {title: 'App Settings', component: 'page-settings', icon: 'cog'},
-            {title: 'Walkthrough', component: 'page-walkthrough', icon: 'photos'}
-        ];
-
+      this.helpMenuItems = [
+        {title: 'Extra Pages (with Animations)', component: 'page-custom-pages', icon: 'albums'},
+        {title: 'About', component: 'page-about', icon: 'information-circle'},
+        {title: 'Support', component: 'page-support', icon: 'call'},
+        {title: 'App Settings', component: 'page-settings', icon: 'cog'},
+        {title: 'Walkthrough', component: 'page-walkthrough', icon: 'photos'}
+      ];
     }
 
     initializeApp() {

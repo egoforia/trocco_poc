@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 // import { CartService } from '../../providers/cart-service-mock';
-import { CartFireService } from '../../providers/cart-fire-service'
-import { RestaurantFireService } from '../../providers/restaurant-fire-service'
-import { Observable } from 'rxjs/Observable';
+import { CartFireService } from '../../providers/cart-fire-service';
+import { RestaurantFireService } from '../../providers/restaurant-fire-service';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage({
 	name: 'page-cart',
@@ -21,9 +22,19 @@ export class CartPage {
 	orders: any;
 	totalVal: number = 0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public cartService: CartFireService, public restaurantService: RestaurantFireService) {
-    this.getOrders();
+  constructor (
+		public navCtrl: NavController,
+		public navParams: NavParams,
+		public cartService: CartFireService,
+		public restaurantService: RestaurantFireService,
+		private afAuth: AngularFireAuth
+	) {
+
   }
+
+	ionViewDidLoad() {
+		this.getOrders();
+	}
 
   removeOrder (order) {
     // this.cartService.removefromCart(order)
@@ -34,7 +45,9 @@ export class CartPage {
   }
 
   getOrders () {
-		this.orders = this.cartService.getOrders();
+		this.afAuth.authState.subscribe(user => {
+			this.orders = this.cartService.getOrders();
+		});
   }
 
 	// getDish (dish_id) {
