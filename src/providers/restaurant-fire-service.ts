@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
+import { AngularFireAuth } from 'angularfire2/auth';
+
 @Injectable()
 export class RestaurantFireService {
 
@@ -11,7 +13,7 @@ export class RestaurantFireService {
   restaurants: Observable<any>;
   active: any = {"id": 1};
 
-  constructor(private afDB: AngularFireDatabase) {
+  constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
     this.restaurants = this.afDB.list('estabelecimentos').valueChanges();
   }
 
@@ -29,17 +31,21 @@ export class RestaurantFireService {
   //
 	getItem(id) {
     return this.afDB.object(`estabelecimentos/${id}`).valueChanges();
-
-		// for (var i = 0; i < this.restaurants.length; i++) {
-		// 	if (this.restaurants[i].id === parseInt(id)) {
-		// 		return this.restaurants[i];
-		// 	}
-		// }
-		// return null;
 	}
 
   setActive(restaurant) {
     this.active = restaurant;
+    this.addGuest(restaurant);
+  }
+
+  addGuest(restaurant) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        const today = new Date().toISOString().slice(0, 10);
+        this.afDB.object(`guests/${today}/${restaurant.id}/${user.uid}`)
+          .set({'check_number': 'waiting'});
+      }
+    });
   }
 
   getActive() {
