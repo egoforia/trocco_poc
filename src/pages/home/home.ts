@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, MenuController, ToastController, PopoverController, ModalController } from 'ionic-angular';
 
-import {RestaurantService} from '../../providers/restaurant-service-mock';
+// import {RestaurantService} from '../../providers/restaurant-service-mock';
+import { RestaurantFireService } from '../../providers/restaurant-fire-service';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
 	name: 'page-home',
@@ -16,11 +18,11 @@ import {RestaurantService} from '../../providers/restaurant-service-mock';
 
 export class HomePage {
 
-  restaurants: Array<any>;
+  restaurants: Observable<any>;
   searchKey: string = "";
   yourLocation: string = "463 Beacon Street Guest House";
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public popoverCtrl: PopoverController, public locationCtrl: AlertController, public modalCtrl: ModalController, public toastCtrl: ToastController, public service: RestaurantService) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public popoverCtrl: PopoverController, public locationCtrl: AlertController, public modalCtrl: ModalController, public toastCtrl: ToastController, public service: RestaurantFireService) {
 		this.menuCtrl.swipeEnable(true, 'authenticated');
 		this.menuCtrl.enable(true);
 		this.findAll();
@@ -47,10 +49,10 @@ export class HomePage {
     this.navCtrl.push('page-cart');
   }
 
-	openRestaurantDetail(restaurant: any) {
-  	this.navCtrl.push('page-restaurant-detail', {
-			'id': restaurant.id
-		});
+	openRestaurantDetail(restaurant) {
+		this.service.setActive(restaurant);
+
+  	this.navCtrl.push('page-restaurant-detail');
 	}
 
   openSettingsPage() {
@@ -66,11 +68,11 @@ export class HomePage {
   }
 
 	onInput(event) {
-	    this.service.findByName(this.searchKey)
-	        .then(data => {
-	            this.restaurants = data;
-	        })
-	        .catch(error => alert(JSON.stringify(error)));
+	    // this.service.findByName(this.searchKey)
+	    //     .then(data => {
+	    //         this.restaurants = data;
+	    //     })
+	    //     .catch(error => alert(JSON.stringify(error)));
 	}
 
 	onCancel(event) {
@@ -78,9 +80,7 @@ export class HomePage {
 	}
 
 	findAll() {
-	    this.service.findAll()
-	        .then(data => this.restaurants = data)
-	        .catch(error => alert(error));
+	  this.restaurants = this.service.findAll();
 	}
 
   alertLocation() {
