@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {IonicPage, NavController, NavParams, LoadingController, ToastController} from "ionic-angular";
 import {Storage} from '@ionic/storage';
-import {OrdersService} from '../../providers/orders-service-mock';
+// import { OrdersService} from '../../providers/orders-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
 
 @IonicPage({
@@ -20,7 +20,7 @@ export class CheckoutPage {
   totalVal: number = 0;
   orderNumber: number = Math.floor(Math.random() * 10000);
 
-  constructor(public nav: NavController, public navParams: NavParams, private storage: Storage, public ordersService: OrdersService, public cartService: CartService, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+  constructor(public nav: NavController, public navParams: NavParams, private storage: Storage/*, public ordersService: OrdersService*/, public cartService: CartService, public loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     this.checkoutData = this.navParams.data.orders;
 
     if (this.checkoutData) {
@@ -38,29 +38,29 @@ export class CheckoutPage {
 
   // process send button
   send() {
-    let loader = this.loadingCtrl.create({
-      content: "Please wait..."
-    });
-    // show message
-    let toast = this.toastCtrl.create({
-      showCloseButton: true,
-      cssClass: 'profile-bg',
-      message: 'Your order has been done successfully!',
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    loader.present();
-
-    setTimeout(() => {
-      loader.dismiss();
-
-      this.ordersService.saveOrder(this.checkoutData, this.totalVal, this.orderNumber).then(data => {
-      	toast.present();
-      	this.cartService.cleanCart();
-      })
-      // back to home page
-      this.nav.setRoot('page-home');
-    }, 3000)
+    // let loader = this.loadingCtrl.create({
+    //   content: "Please wait..."
+    // });
+    // // show message
+    // let toast = this.toastCtrl.create({
+    //   showCloseButton: true,
+    //   cssClass: 'profile-bg',
+    //   message: 'Your order has been done successfully!',
+    //   duration: 3000,
+    //   position: 'bottom'
+    // });
+		//
+    // loader.present();
+		//
+    // setTimeout(() => {
+    //   loader.dismiss();
+		//
+    //   this.ordersService.saveOrder(this.checkoutData, this.totalVal, this.orderNumber).then(data => {
+    //   	toast.present();
+    //   	this.cartService.cleanCart();
+    //   })
+    //   // back to home page
+    //   this.nav.setRoot('page-home');
+    // }, 3000)
   }
 }

@@ -6,6 +6,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import { Firebase } from '@ionic-native/firebase';
 
 import { AngularFireDatabase } from 'angularfire2/database';
+import { RestaurantFireService } from '../providers/restaurant-fire-service'
 import { Observable } from 'rxjs/Observable';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -52,7 +53,8 @@ export class foodIonicApp {
       public splashScreen: SplashScreen,
       public firebase: Firebase,
       public afDB: AngularFireDatabase,
-      public afAuth: AngularFireAuth
+      public afAuth: AngularFireAuth,
+      private restaurantService: RestaurantFireService
     ) {
         this.initializeApp();
         this.initializeFirebase();
@@ -97,12 +99,28 @@ export class foodIonicApp {
       this.platform.ready().then(() => {
         this.statusBar.overlaysWebView(false);
 
-        this.afAuth.authState.subscribe(user => {
+        const authSubscription = this.afAuth.authState.subscribe(user => {
           console.log('authState subscribed user: ', JSON.stringify(user));
-          if (user)
-            this.rootPage = 'page-home';
-          else
-            this.rootPage = 'page-auth';
+
+          // logged user
+          if (user) {
+            this.restaurantService.recoveryActive(() => {
+              const guestSubs = this.restaurantService.getGuestSubscriber();
+
+              if (guestSubs) {
+                this.rootPage = 'page-restaurant-detail';
+              }
+              else {
+                this.rootPage = 'page-home';
+              }
+            });
+          }
+          // no user
+          else {
+            this.rootPage = 'page-walkthrough';
+          }
+
+          authSubscription.unsubscribe();
 
           this.splashScreen.hide();
         });

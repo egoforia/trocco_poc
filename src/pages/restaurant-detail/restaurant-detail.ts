@@ -12,7 +12,7 @@ import leaflet from 'leaflet';
 
 @IonicPage({
 	name: 'page-restaurant-detail',
-	segment: 'restaurant/:id'
+	segment: 'restaurant'
 })
 
 @Component({
@@ -89,6 +89,14 @@ export class RestaurantDetailPage {
 	  openCart() {
 	    this.navCtrl.push('page-cart');
 	  }
+
+		openCheck() {
+			this.navCtrl.push('page-cart');
+		}
+
+		openOrder() {
+			this.navCtrl.push('page-orders');
+		}
 
     showMarkers() {
         if (this.markersGroup) {

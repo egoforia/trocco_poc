@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { OrdersService } from '../../providers/orders-service-mock';
+import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { OrdersFireService } from '../../providers/orders-fire-service';
+import { Observable } from 'rxjs/Observable';
+
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage({
 	name: 'page-orders',
@@ -13,24 +16,64 @@ import { OrdersService } from '../../providers/orders-service-mock';
 })
 
 export class OrdersPage {
+	order$: Observable<any>;
 
-	lastOrders: Array<any> = [];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public ordersService: OrdersService) {
-    this.getOrders();
-    // console.log(this.lastOrders);
+  constructor(
+		public navCtrl: 			NavController,
+		public navParams: 		NavParams,
+		public toastCtrl: 		ToastController,
+		public ordersService: OrdersFireService,
+		private afAuth: 			AngularFireAuth,
+		private alertCtrl: 		AlertController
+	) {
+		this.getLastOrder();
   }
 
-  // ionViewDidLoad() {
-  //   console.log('ionViewDidLoad OrdersPage');
-  // }
+  ionViewDidLoad() {
 
-  getOrders() {
-      this.ordersService.getOrders()
-          .then(data => {
-          	console.log(data);
-          	this.lastOrders = data
-          });
   }
 
+	getLastOrder() {
+		this.order$ = this.ordersService.getLastOrder();
+	}
+
+	openRestaurantDetail() {
+		this.navCtrl.push('page-restaurant-detail');
+	}
+
+	openCheck() {
+		this.navCtrl.push('page-cart');
+	}
+
+  sendOrder() {
+		let alert = this.alertCtrl.create({
+			title: 'Confirmar Pedido',
+      message: "Ao clicar em confirmar, você se responsabiliza por pagar seu pedido.",
+			buttons: [
+        {
+          text: 'Cancelar',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Confirmar',
+          handler: data => {
+						console.log(data);
+						this.ordersService.addToCart()
+							.then(order => {
+								let toast = this.toastCtrl.create({
+					          message: 'Seu pedido foi enviado para o balcão.',
+					          cssClass: 'mytoast',
+					          duration: 2000
+					      });
+					      toast.present(toast);
+							});
+          }
+        }
+      ]
+		});
+
+		alert.present();
+	}
 }

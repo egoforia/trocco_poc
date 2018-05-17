@@ -52,7 +52,7 @@ export class HomePage {
 	openRestaurantDetail(restaurant) {
 		this.service.setActive(restaurant);
 
-  	this.navCtrl.push('page-restaurant-detail');
+  	this.navCtrl.push('page-check-number');
 	}
 
   openSettingsPage() {

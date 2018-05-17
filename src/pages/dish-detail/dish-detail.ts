@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 
 // import {DishService} from '../../providers/dish-service-mock';
-// import {CartService} from '../../providers/cart-service-mock';
 
+import { OrdersFireService } from '../../providers/orders-fire-service';
 import { RestaurantFireService } from '../../providers/restaurant-fire-service'
 import { CartFireService } from '../../providers/cart-fire-service'
 import { Observable } from 'rxjs/Observable';
@@ -23,15 +23,13 @@ export class DishDetailPage {
   dish: any;
   qtd: number = 1;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, /*public dishService: DishService, */public cartService: CartFireService, public restaurantService: RestaurantFireService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController, public restaurantService: RestaurantFireService, public ordersService: OrdersFireService) {
     this.id = this.navParams.get('id');
 		// this.restaurant_id = this.navParams.get('restaurant_id');
 
 		this.restaurantService.getDish(this.id).subscribe(dish => {
 			this.dish = dish;
 		});
-
-  	// this.dish = this.dishService.getItem(this.param) ? this.dishService.getItem(this.param) : this.dishService.findAll()[0];
   }
 
   // minus adult when click minus button
@@ -43,28 +41,29 @@ export class DishDetailPage {
     this.qtd++;
   }
 
-  addcart(dish, qtd) {
-  	// this.cartService.addtoCart(dish, qtd).then(dish => {
-    //   let toast = this.toastCtrl.create({
-    //       message: 'Dish added to Cart',
-    //       cssClass: 'mytoast',
-    //       duration: 2000
-    //   });
-    //   toast.present(toast);
-  	// });
+  addToOrder(dish, qtd) {
+		this.ordersService.addDish(dish, qtd);
+		let toast = this.toastCtrl.create({
+      message: `${qtd} x ${dish.name} foi adicionado ao pedido`,
+      cssClass: 'mytoast',
+      duration: 2000
+    });
+    toast.present(toast);
 
-		this.cartService.addToCart(this.restaurant_id, dish, qtd).then(dish => {
-      let toast = this.toastCtrl.create({
-          message: 'Pedido adicionado ao carrinho',
-          cssClass: 'mytoast',
-          duration: 2000
-      });
-      toast.present(toast);
-  	});
+		this.navCtrl.pop();
   }
 
   openCart() {
     this.navCtrl.push('page-cart');
   }
+
+	canAddToOrder():boolean {
+		const lastOrder = this.ordersService.getLastOrder().getValue();
+
+		if (!lastOrder.status || lastOrder.status == 'finalized' || lastOrder.status == 'canceled')
+			return true;
+		else
+			return false;
+	}
 
 }

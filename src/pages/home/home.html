@@ -29,22 +29,6 @@
 <ion-content>
 
 	<ion-grid no-padding fixed>
-		<ion-row no-padding>
-			<ion-col>
-
-				<ion-card no-margin margin-bottom>
-			    <ion-item class="lightest-bg">
-			      <h3 ion-text no-margin color="dark" class="fw500 no-margin">Restaurants near you:</h3>
-			      <span ion-text class="text-11x no-margin" color="primary">{{yourLocation}}</span>
-			      <button ion-button outline round item-end icon-right color="primary" (click)="alertLocation()">
-			      	Change Location
-			      	<ion-icon name="locate"></ion-icon>
-			      </button>
-			    </ion-item>
-				</ion-card>
-
-			</ion-col>
-		</ion-row>
 
 		<ion-list ion-row padding-horizontal>
 		  <button ion-item ion-col *ngFor="let restaurant of restaurants | async" (click)="openRestaurantDetail(restaurant)" col-12 col-md-6>
@@ -71,7 +55,7 @@
 
 </ion-content>
 
-<ion-footer class="no-padding dark-bg">
+<!-- <ion-footer class="no-padding dark-bg">
 	<ion-grid no-padding fixed>
 		<ion-row no-padding>
 			<button ion-button icon-left block color="primary" (click)="openNearbyPage()" class="col col-4">
@@ -89,4 +73,4 @@
 		</ion-row>
 	</ion-grid>
 
-</ion-footer>
+</ion-footer> -->

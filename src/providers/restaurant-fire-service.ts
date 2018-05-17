@@ -11,7 +11,7 @@ export class RestaurantFireService {
   // favoriteCounter: number = 0;
   // favorites: Array<any> = [];
   restaurants: Observable<any>;
-  active: any = {"id": 1};
+  active: any = {};
 
   constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
     this.restaurants = this.afDB.list('estabelecimentos').valueChanges();
@@ -38,14 +38,43 @@ export class RestaurantFireService {
     this.addGuest(restaurant);
   }
 
+  recoveryActive(success) {
+    if (this.afAuth.auth.currentUser) {
+      const uid = this.afAuth.auth.currentUser.uid;
+      this.afDB.object(`users/${uid}`).valueChanges().subscribe((user: any) => {
+        if (user.guest_on) {
+          this.afDB.object(`estabelecimentos/${user.guest_on}`).valueChanges().subscribe((restaurant: any) => {
+            if (restaurant) {
+              this.active = restaurant;
+
+              if (success instanceof Function)
+                success();
+            }
+          });
+        }
+      });
+    }
+  }
+
   addGuest(restaurant) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         const today = new Date().toISOString().slice(0, 10);
         this.afDB.object(`guests/${today}/${restaurant.id}/${user.uid}`)
-          .set({'check_number': 'waiting'});
+          .set({'status': 'waiting'});
+        this.afDB.object(`users/${user.uid}`)
+          .update({"guest_on": restaurant.id});
       }
     });
+  }
+
+  getGuestSubscriber() {
+    if (this.active.id) {
+      const today = new Date().toISOString().slice(0, 10);
+      return this.afDB.object(`guests/${today}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`).valueChanges();
+    }
+
+    return null;
   }
 
   getActive() {

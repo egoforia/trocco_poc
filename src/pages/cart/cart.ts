@@ -6,6 +6,7 @@ import { CartFireService } from '../../providers/cart-fire-service';
 import { RestaurantFireService } from '../../providers/restaurant-fire-service';
 
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable } from 'rxjs/Observable';
 
 @IonicPage({
 	name: 'page-cart',
@@ -19,8 +20,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 export class CartPage {
 
-	orders: any;
-	totalVal: number = 0;
+	orders$: Observable<any>;
 
   constructor (
 		public navCtrl: NavController,
@@ -46,9 +46,17 @@ export class CartPage {
 
   getOrders () {
 		this.afAuth.authState.subscribe(user => {
-			this.orders = this.cartService.getOrders();
+			this.orders$ = this.cartService.getOrders();
 		});
   }
+
+	getTotalSubject() {
+		return this.cartService.totalSubject;
+	}
+
+	getCanDoCheckoutSubject() {
+		return this.cartService.canDoCheckoutSubject;
+	}
 
 	// getDish (dish_id) {
 	//
@@ -73,7 +81,15 @@ export class CartPage {
   }
 
   openCheckout() {
-      this.navCtrl.push('page-checkout', {orders: this.orders});
+  	this.navCtrl.push('page-checkout', { orders: this.orders$ });
   }
+
+	openRestaurantDetail() {
+		this.navCtrl.push('page-restaurant-detail');
+	}
+
+	openOrder() {
+		this.navCtrl.push('page-orders');
+	}
 
 }

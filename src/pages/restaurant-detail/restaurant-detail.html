@@ -133,3 +133,20 @@
     </button>
   </ion-fab>
 </ion-content>
+
+
+<ion-footer class="no-padding dark-bg">
+	<ion-grid no-padding fixed>
+		<ion-row no-padding>
+			<button ion-button icon-left block color="primary" (click)="openCheck()" class="col col-6">
+        	<ion-icon name="compass" class="text-18x"></ion-icon>
+        	<span ion-text class="text-12x">Comanda</span>
+			</button>
+			<button ion-button icon-left block color="primary" (click)="openOrder()" class="col col-6">
+          <ion-icon name="albums" class="text-18x"></ion-icon>
+          <span ion-text class="text-12x">Pedido</span>
+			</button>
+		</ion-row>
+	</ion-grid>
+
+</ion-footer>

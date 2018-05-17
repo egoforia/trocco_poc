@@ -36,10 +36,13 @@
 	        </ion-row>
 	        <ion-row>
 				<ion-col text-center>
-		      <button ion-button color="secondary" icon-left tappable (click)="addcart(dish, qtd)">
+		      <button ion-button color="secondary" icon-left tappable (click)="addToOrder(dish, qtd)" [disabled]="!canAddToOrder()">
 		      	<ion-icon name="cart"></ion-icon>
-		      	Add Cart ({{ dish.price * qtd | currency }})
+		      	Adicionar ao Pedido ({{ dish.price * qtd | currency }})
 		      </button>
+          <div *ngIf="!canAddToOrder()">
+            <span>Aguarde seu pedido ser finalizado para fazer um novo</span>
+          </div>
 				</ion-col>
 	        </ion-row>
 	      </ion-grid>

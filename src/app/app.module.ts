@@ -13,7 +13,6 @@ import {RestaurantService} from "../providers/restaurant-service-mock";
 import {DishService} from "../providers/dish-service-mock";
 import {CategoryService} from "../providers/category-service-mock";
 import {CartService} from "../providers/cart-service-mock";
-import {OrdersService} from "../providers/orders-service-mock";
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,6 +29,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { RestaurantFireService } from "../providers/restaurant-fire-service";
 import { CartFireService } from "../providers/cart-fire-service";
+import { OrdersFireService } from "../providers/orders-fire-service";
 
 import { Facebook } from '@ionic-native/facebook';
 
@@ -77,12 +77,12 @@ export const firebaseConfig = {
     CategoryService,
     MessageService,
     CartService,
-    OrdersService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Firebase,
     AngularFireDatabase,
     RestaurantFireService,
     CartFireService,
+    OrdersFireService,
     Facebook
   ]
 })
