@@ -111,8 +111,8 @@ export class foodIonicApp {
                 this.rootPage = 'page-home';
               }
             },
-            (e: Error) => {
-              console.error(e);
+            (e: any) => {
+              console.log(e);
             });
           }
           // no user

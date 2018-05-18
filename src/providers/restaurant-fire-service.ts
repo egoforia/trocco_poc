@@ -38,19 +38,22 @@ export class RestaurantFireService {
     this.addGuest(restaurant);
   }
 
-  recoveryActive(success) {
+  recoveryActive(then, catch) {
     if (this.afAuth.auth.currentUser) {
       const uid = this.afAuth.auth.currentUser.uid;
       this.afDB.object(`users/${uid}`).valueChanges().subscribe((user: any) => {
-        if (user.guest_on) {
+        if (user && user.guest_on) {
           this.afDB.object(`estabelecimentos/${user.guest_on}`).valueChanges().subscribe((restaurant: any) => {
             if (restaurant) {
               this.active = restaurant;
 
-              if (success instanceof Function)
-                success();
+              if (then instanceof Function)
+                then();
             }
           });
+        } else {
+          if (catch instanceof Function)
+            catch(`Couldn't find user ${uid}`);
         }
       });
     }
