@@ -59,40 +59,37 @@ export class foodIonicApp {
         this.initializeApp();
         this.initializeFirebase();
 
-
-
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
 
         this.appMenuItems = [
-            {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},
-            {title: 'Dish List', component: 'page-dish-list', icon: 'pizza'},
-            {title: 'Nearby', component: 'page-nearby', icon: 'compass'},
-            {title: 'By Category', component: 'page-category', icon: 'albums'},
-            {title: 'Latest Orders', component: 'page-orders', icon: 'list-box'},
-            {title: 'Cart', component: 'page-cart', icon: 'cart'},
-			{title: 'Favorite Restaurants', component: 'page-favorite-list', icon: 'heart'}
+          {title: 'Restaurants', component: 'page-restaurant-list', icon: 'home'},
+          {title: 'Dish List', component: 'page-dish-list', icon: 'pizza'},
+          {title: 'Nearby', component: 'page-nearby', icon: 'compass'},
+          {title: 'By Category', component: 'page-category', icon: 'albums'},
+          {title: 'Latest Orders', component: 'page-orders', icon: 'list-box'},
+          {title: 'Cart', component: 'page-cart', icon: 'cart'},
+          {title: 'Favorite Restaurants', component: 'page-favorite-list', icon: 'heart'},
+          {title: 'Orders Lobby', component: 'page-orders-lobby', icon: 'heart'}
         ];
 
         this.yourRestaurantMenuItems = [
-            {title: 'Register Restaurant', component: 'page-your-restaurant', icon: 'clipboard'}
+          {title: 'Register Restaurant', component: 'page-your-restaurant', icon: 'clipboard'}
         ];
 
-
         this.accountMenuItems = [
-            {title: 'Login', component: 'page-auth', icon: 'log-in'},
-            {title: 'My Account', component: 'page-my-account', icon: 'contact'},
-            {title: 'Logout', component: 'page-auth', icon: 'log-out'},
+          {title: 'Login', component: 'page-auth', icon: 'log-in'},
+          {title: 'My Account', component: 'page-my-account', icon: 'contact'},
+          {title: 'Logout', component: 'page-auth', icon: 'log-out'},
         ];
 
         this.helpMenuItems = [
-			{title: 'Extra Pages (with Animations)', component: 'page-custom-pages', icon: 'albums'},
-            {title: 'About', component: 'page-about', icon: 'information-circle'},
-            {title: 'Support', component: 'page-support', icon: 'call'},
-            {title: 'App Settings', component: 'page-settings', icon: 'cog'},
-            {title: 'Walkthrough', component: 'page-walkthrough', icon: 'photos'}
+          {title: 'Extra Pages (with Animations)', component: 'page-custom-pages', icon: 'albums'},
+          {title: 'About', component: 'page-about', icon: 'information-circle'},
+          {title: 'Support', component: 'page-support', icon: 'call'},
+          {title: 'App Settings', component: 'page-settings', icon: 'cog'},
+          {title: 'Walkthrough', component: 'page-walkthrough', icon: 'photos'}
         ];
-
     }
 
     initializeApp() {
@@ -113,6 +110,9 @@ export class foodIonicApp {
               else {
                 this.rootPage = 'page-home';
               }
+            },
+            (e: Error) => {
+              console.error(e);
             });
           }
           // no user

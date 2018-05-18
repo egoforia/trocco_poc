@@ -1,0 +1,61 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Orders Lobby</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-grid no-padding fixed>
+    <!-- em aberto -->
+		<ion-row no-padding>
+			<ion-col>
+
+        <ion-list no-margin>
+          <ion-item *ngFor="let openOrders of open$ | async">
+            <ion-card>
+              <ion-card-content>
+                {{ openOrders | json }}
+
+                <!-- <ion-list no-margin>
+                  <ion-item-sliding *ngFor="let dish of openOrder.dishes">
+                    <ion-item *ngIf="dish.dish | async; let dishObj; else loadingDish;">
+                      <ion-avatar item-start>
+                        <img src="{{dishObj.picture}}"/>
+                      </ion-avatar>
+                      <h2 ion-text color="dark" class="fw700">
+                        {{ dishObj.name }} x <span>{{ dish.quantity }}</span>
+                      </h2>
+                    </ion-item>
+                    <ng-template #loading><ion-spinner></ion-spinner>Carregando Item...</ng-template>
+                  </ion-item-sliding>
+                </ion-list> -->
+
+              </ion-card-content>
+            </ion-card>
+          </ion-item>
+        </ion-list>
+
+        <!-- <ng-template #noOrders>
+          Carregando pedidos...
+        </ng-template> -->
+
+      </ion-col>
+    </ion-row>
+    <!-- em preparo -->
+		<ion-row no-padding>
+			<ion-col>
+
+      </ion-col>
+    </ion-row>
+    <!-- pronto para retirar -->
+		<ion-row no-padding>
+			<ion-col>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>
