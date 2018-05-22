@@ -30,8 +30,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { RestaurantFireService } from "../providers/restaurant-fire-service";
 import { CartFireService } from "../providers/cart-fire-service";
 import { OrdersFireService } from "../providers/orders-fire-service";
+import { UsersFireService } from '../providers/users-fire-service';
 
 import { Facebook } from '@ionic-native/facebook';
+import { OrdersLobbyFireService } from '../providers/orders-lobby-fire-service';
+
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
@@ -83,6 +86,8 @@ export const firebaseConfig = {
     RestaurantFireService,
     CartFireService,
     OrdersFireService,
+    UsersFireService,
+    OrdersLobbyFireService,
     Facebook
   ]
 })

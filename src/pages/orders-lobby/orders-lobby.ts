@@ -4,14 +4,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { AngularFireDatabase } from 'angularfire2/database';
-import { RestaurantFireService } from '../../providers/restaurant-fire-service'
-
-/**
- * Generated class for the OrdersLobbyPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { RestaurantFireService } from '../../providers/restaurant-fire-service';
+import { UsersFireService } from '../../providers/users-fire-service';
+import { OrdersLobbyFireService } from '../../providers/orders-lobby-fire-service'
 
 @IonicPage({
   name: 'page-orders-lobby',
@@ -23,30 +18,28 @@ import { RestaurantFireService } from '../../providers/restaurant-fire-service'
 })
 export class OrdersLobbyPage {
 
-  // orders: any = {
-  //
-  //   "preparing$":  new Observable<any[]>(),
-  //   "ready$":      new Observable<any[]>(),
-  // };
+  open$: Observable<any[]>;
 
-  open$: Observable<void>;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public afDB: AngularFireDatabase, public restaurantService: RestaurantFireService) {
-    const restaurant_id = restaurantService.getActive().id;
-    const today = new Date().toISOString().slice(0, 10);
-
-    console.log(`orders/${restaurant_id}/${today}`);
-    this.open$ = this.afDB.list(`orders/${restaurant_id}/${today}`)
-      .valueChanges()
-      .map((order :any) => {
-        order.dishes.map(item => {
-          item.dish = this.restaurantService.getDish(item.dish_id);
-        });
-      });
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public afDB: AngularFireDatabase,
+    public restaurantService: RestaurantFireService,
+    public usersService: UsersFireService,
+    public ordersLobbyService: OrdersLobbyFireService
+  ) {
+    this.open$ = this.ordersLobbyService.getOpenOrders$()
+    // this.open$.subscribe(orders => {
+    //   debugger;
+    // });
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad OrdersLobbyPage');
+    // console.log('ionViewDidLoad OrdersLobbyPage');
+  }
+
+  setPreparing(order_id) {
+    this.ordersLobbyService.setPreparing(order_id);
   }
 
 }

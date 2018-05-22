@@ -30,8 +30,8 @@ export class CartFireService {
       const today = new Date().toISOString().slice(0, 10);
       const restaurant_id = this.restaurantService.getActive().id;
 
-      console.log(`guests/${today}/${restaurant_id}/${uid}/orders`);
-      this.ordersRef = this.afDB.list(`guests/${today}/${restaurant_id}/${uid}/orders`);
+      // this.ordersRef = this.afDB.list(`guests/${today}/${restaurant_id}/${uid}/orders`);
+      this.ordersRef = this.afDB.list(`orders/${restaurant_id}/${today}`)
     } catch (e) {
       console.error(e);
     }
@@ -41,10 +41,11 @@ export class CartFireService {
     console.log(this.ordersRef);
     // return this.orders.push({dish_id: dish.id, quantity: quantity, status: 'preparing'});
     return this.ordersRef.push({
-      dishes: dishes.map(item => {
+      status:   "open",
+      user_id:  this.afAuth.auth.currentUser.uid,
+      dishes:   dishes.map(item => {
         return { dish_id: item.dish_id, quantity: item.quantity };
-      }),
-      status: "preparing"
+      })
     });
   }
 

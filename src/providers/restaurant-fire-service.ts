@@ -21,14 +21,6 @@ export class RestaurantFireService {
     return this.restaurants;
   }
 
-	// getRestaurants() {
-	// 	return this.restaurants;
-	// }
-  //
-  // findById(id) {
-  //   return Promise.resolve(restaurants[id - 1]);
-  // }
-  //
 	getItem(id) {
     return this.afDB.object(`estabelecimentos/${id}`).valueChanges();
 	}
@@ -38,11 +30,11 @@ export class RestaurantFireService {
     this.addGuest(restaurant);
   }
 
-  recoveryActive(then, catch) {
+  recoveryActive(then, error) {
     if (this.afAuth.auth.currentUser) {
       const uid = this.afAuth.auth.currentUser.uid;
       this.afDB.object(`users/${uid}`).valueChanges().subscribe((user: any) => {
-        if (user && user.guest_on) {
+        if (user) {
           this.afDB.object(`estabelecimentos/${user.guest_on}`).valueChanges().subscribe((restaurant: any) => {
             if (restaurant) {
               this.active = restaurant;
@@ -52,8 +44,8 @@ export class RestaurantFireService {
             }
           });
         } else {
-          if (catch instanceof Function)
-            catch(`Couldn't find user ${uid}`);
+          if (error instanceof Function)
+            error(new Error(`Couldn't find user ${uid}`));
         }
       });
     }
@@ -87,29 +79,5 @@ export class RestaurantFireService {
   getDish(dish_id) {
     return this.afDB.object(`estabelecimentos/${this.active.id}/dishes/${dish_id}`).valueChanges();
   }
-  //
-  // findByName(searchKey: string) {
-  //   let key: string = searchKey.toUpperCase();
-  //   return Promise.resolve(restaurants.filter((restaurant: any) =>
-  //       (restaurant.title +  ' ' +restaurant.address +  ' ' + restaurant.city + ' ' + restaurant.description).toUpperCase().indexOf(key) > -1));
-  // }
-  //
-  // getFavorites() {
-  //   return Promise.resolve(this.favorites);
-  // }
-  //
-  // favorite(restaurant) {
-  //   this.favoriteCounter = this.favoriteCounter + 1;
-  //   this.favorites.push({id: this.favoriteCounter, restaurant: restaurant});
-  //   return Promise.resolve();
-  // }
-  //
-  // unfavorite(favorite) {
-  //   let index = this.favorites.indexOf(favorite);
-  //   if (index > -1) {
-  //     this.favorites.splice(index, 1);
-  //   }
-  //   return Promise.resolve();
-  // }
 
 }

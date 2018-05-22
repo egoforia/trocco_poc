@@ -14,11 +14,18 @@ export class UsersFireService {
   }
 
   getUser$(user_id: string) {
-    this.getUserRef(user_id).valueChanges();
+    return this.getUserRef(user_id).valueChanges();
   }
 
   saveUser(user: any) {
-    this.getUserRef(user.uid).update(user);
+    // clean up empty values
+    Object.keys(user).forEach(key => {
+     if(!user[key] && user[key] !== false){
+        delete user[key];
+      }
+    });
+
+    return this.getUserRef(user.uid).update(user);
   }
 
 }

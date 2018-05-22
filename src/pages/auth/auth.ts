@@ -6,7 +6,8 @@ import { map, take, debounceTime } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
+import { UsersFireService } from '../../providers/users-fire-service';
 
 @IonicPage({
 	name: 'page-auth',
@@ -24,14 +25,15 @@ export class AuthPage implements OnInit {
   auth: string = "login";
 
   constructor(
-		private _fb: 				FormBuilder,
-		public nav: 				NavController,
-		public forgotCtrl: 	AlertController,
-		public menu:				MenuController,
-		public toastCtrl: 	ToastController,
-		public afAuth: 			AngularFireAuth,
-		private facebook: 	Facebook,
-    private platform: 	Platform
+		private _fb: 					FormBuilder,
+		public nav: 					NavController,
+		public forgotCtrl: 		AlertController,
+		public menu:					MenuController,
+		public toastCtrl: 		ToastController,
+		public afAuth: 				AngularFireAuth,
+		private facebook: 		Facebook,
+    private platform: 		Platform,
+		private usersService: UsersFireService
 	) {
 		this.menu.swipeEnable(false);
 		this.menu.enable(false);
@@ -69,6 +71,10 @@ export class AuthPage implements OnInit {
   //   this.nav.setRoot(RegisterPage);
   // }
 
+	goToHome() {
+		this.nav.setRoot('page-home');
+	}
+
 	loginFacebook() {
 		if (this.platform.is('cordova')) {
       return this.facebook.login(['email', 'public_profile']).then(res => {
@@ -76,7 +82,11 @@ export class AuthPage implements OnInit {
         return this.afAuth.auth
 					.signInWithCredential(facebookCredential)
 					.then(res => {
-						this.login();
+						this.usersService.saveUser({
+
+						}).then(user => {
+							this.goToHome();
+						});
 					})
 					.catch(error => {
 						console.error('Erro no login pelo facebook');
@@ -86,10 +96,19 @@ export class AuthPage implements OnInit {
       return this.afAuth.auth
         .signInWithPopup(new firebase.auth.FacebookAuthProvider())
         .then(res => {
-					this.login()
+					debugger;
+					this.usersService.saveUser({
+						uid: 					res.user.uid,
+						displayName: 	res.user.displayName,
+						email: 				res.user.email,
+						photoUrl: 		res.user.photoURL
+					}).then(user => {
+						this.goToHome();
+					});
 				})
 				.catch(error => {
-					console.error('Erro no login pelo facebook');
+					debugger;
+					this.toast(error.message);
 				});
     }
   }
@@ -99,6 +118,9 @@ export class AuthPage implements OnInit {
     const form = this.onLoginForm;
 		if (form.valid) {
 			this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
+			.then(res => {
+				this.goToHome();
+			})
 			.catch(error => {
 				// show toast with error message
 				this.toast(error.message);
@@ -110,13 +132,20 @@ export class AuthPage implements OnInit {
 		const form = this.onRegisterForm;
 		if (form.valid) {
 			this.afAuth.auth.createUserAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
-			.then(userCredential => {
-				// update user's displayName
-				userCredential.user.updateProfile({
-					displayName: form.value.fullName
-				});
+			.then(res => {
+				this.usersService.saveUser({
+					uid: 					res.user.uid,
+					displayName: 	form.value.fullName,
+					email: 				res.user.email,
+				}).then(user => {
+					// update user's displayName
+					res.user.updateProfile({
+						displayName: form.value.fullName
+					});
 
-				userCredential.user.sendEmailVerification();
+					res.user.sendEmailVerification();
+					this.goToHome();
+				});
 			})
 			.catch(error => {
 				// show toast with error message

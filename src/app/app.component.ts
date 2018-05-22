@@ -111,8 +111,9 @@ export class foodIonicApp {
                 this.rootPage = 'page-home';
               }
             },
-            (e: any) => {
-              console.log(e);
+            (e: Error) => {
+              console.error(e);
+              this.logout();
             });
           }
           // no user
@@ -144,7 +145,8 @@ export class foodIonicApp {
         this.nav.setRoot(page.component);
     }
 
-    logout(page) {
+    logout() {
       this.afAuth.auth.signOut();
+      this.nav.setRoot('page-auth');
     }
 }
