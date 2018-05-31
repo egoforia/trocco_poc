@@ -6,7 +6,7 @@ import { map, take, debounceTime } from 'rxjs/operators';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Facebook } from '@ionic-native/facebook';
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { UsersFireService } from '../../providers/users-fire-service';
 
 @IonicPage({
