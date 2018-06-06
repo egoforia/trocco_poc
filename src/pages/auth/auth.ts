@@ -105,7 +105,9 @@ export class AuthPage implements OnInit {
 						uid: res.user.uid,
 						displayName: res.user.displayName,
 						email: res.user.email,
-						photoUrl: res.user.photoURL
+						photoUrl: res.user.photoURL,
+						cpf: '',
+						phoneNumber: ''
 					}).then(user => {
 						// this.goToHome();
 						this.goToCompleteUserInformation();
@@ -146,6 +148,8 @@ export class AuthPage implements OnInit {
 						uid: res.user.uid,
 						displayName: form.value.fullName,
 						email: res.user.email,
+						cpf: '',
+						phoneNumber: ''
 					}).then(user => {
 						// update user's displayName
 						res.user.updateProfile({

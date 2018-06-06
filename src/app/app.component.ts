@@ -7,6 +7,8 @@ import { Firebase } from '@ionic-native/firebase';
 
 import { AngularFireDatabase } from 'angularfire2/database';
 import { RestaurantFireService } from '../providers/restaurant-fire-service'
+import { UsersFireService } from '../providers/users-fire-service';
+
 import { Observable } from 'rxjs/Observable';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -54,6 +56,7 @@ export class foodIonicApp {
       public firebase: Firebase,
       public afDB: AngularFireDatabase,
       public afAuth: AngularFireAuth,
+      private usersService: UsersFireService,
       private restaurantService: RestaurantFireService
     ) {
         this.initializeApp();
@@ -97,37 +100,39 @@ export class foodIonicApp {
         this.statusBar.overlaysWebView(false);
 
         const authSubscription = this.afAuth.authState.subscribe(user => {
-          console.log('authState subscribed user: ', JSON.stringify(user));
+            console.log('authState subscribed user: ', JSON.stringify(user));
 
-          // logged user
-          if (user) {
-            if(!user.cpf) {
-              this.rootPage = 'page-complete-user-information';
+            if(user) {
+                this.usersService.getUser$(user.uid).subscribe(_user => {
+                    this.user = _user;
+
+                    if(this.user) {
+                        if(!this.user.cpf) {
+                            this.rootPage = 'page-complete-user-information';
+                        } else {
+                            this.restaurantService.recoveryActive(() => {
+                                const guestSubs = this.restaurantService.getGuestSubscriber();
+
+                                if (guestSubs) {
+                                  this.rootPage = 'page-restaurant-detail';
+                                }
+                                else {
+                                  this.rootPage = 'page-home';
+                                }
+                              },
+                              (e: Error) => {
+                                console.error(e);
+                                this.logout();
+                          });
+                      }
+                    }
+                });
+            } else {
+                this.rootPage = 'page-walkthrough';
             }
 
-            this.restaurantService.recoveryActive(() => {
-              const guestSubs = this.restaurantService.getGuestSubscriber();
-
-              if (guestSubs) {
-                this.rootPage = 'page-restaurant-detail';
-              }
-              else {
-                this.rootPage = 'page-home';
-              }
-            },
-            (e: Error) => {
-              console.error(e);
-              this.logout();
-            });
-          }
-          // no user
-          else {
-            this.rootPage = 'page-walkthrough';
-          }
-
-          authSubscription.unsubscribe();
-
-          this.splashScreen.hide();
+            authSubscription.unsubscribe();
+            this.splashScreen.hide();
         });
       });
 

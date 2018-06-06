@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { IonicPage, NavController, AlertController, ToastController, MenuController, Platform } from 'ionic-angular';
-
-import * as firebase from 'firebase/app';
 import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UsersFireService } from '../../providers/users-fire-service';
-
 
 @IonicPage({
     name: 'page-complete-user-information',
@@ -27,7 +24,6 @@ export class CompleteUserInformationPage {
         public nav: NavController,
         public forgotCtrl: AlertController,
         public menu: MenuController,
-        public toastCtrl: ToastController,
         public afAuth: AngularFireAuth,
         private platform: Platform,
         private usersService: UsersFireService,
@@ -41,13 +37,15 @@ export class CompleteUserInformationPage {
 
     initializeFirebase() {
         const authSubscription = this.afAuth.authState.subscribe(user => {
-            console.log('authState subscribed user: ', JSON.stringify(user, null, 2));
-            this.user = user;
-        });
-    }
+            this.usersService.getUser$(user.uid).subscribe(_user => {
+                this.user = _user;
 
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad CompleteUserInformationPage');
+                if(this.user.cpf) {
+                    this.goToHome();
+                }
+            });
+            authSubscription.unsubscribe();
+        });
     }
 
     ngOnInit() {
@@ -79,8 +77,6 @@ export class CompleteUserInformationPage {
             this.usersService.saveUser(user).then(res => {
                 this.goToHome();
             });
-        } else {
-            this.toast('Dados incorretos');
         }
     }
 }

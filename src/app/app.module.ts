@@ -53,7 +53,7 @@ export const firebaseConfig = {
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(foodIonicApp, {
-    	preloadModules: true,
+	  preloadModules: true,
       scrollPadding: false,
       scrollAssist: true,
       autoFocusAssist: false
