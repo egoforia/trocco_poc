@@ -1,0 +1,47 @@
+<!-- -->
+<ion-content padding class="profiles-bg">
+	<div class="auth-content">
+
+		<!-- Logo -->
+		<div padding-horizontal text-center>
+			<div class="logo">
+				<img src="assets/img/foodIonic-ico.png">
+			</div>
+			<h2 ion-text class="text-secondary" no-margin>
+				<strong>Trocco</strong>
+			</h2>
+		</div>
+
+    <!-- Complete User Information form -->
+    <div id="completeUserInformationForm">
+      <form [formGroup]="onCompleteUserInformationForm" class="list-form">
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="mail" item-start class="text-white"></ion-icon>
+            CPF
+          </ion-label>
+          <ion-input type="string" formControlName="cpf"></ion-input>
+        </ion-item>
+        <p ion-text color="danger" class="text-12x has-error" *ngIf="onCompleteUserInformationForm.get('cpf').touched && onCompleteUserInformationForm.get('cpf').hasError('required')">This field is required</p>
+
+        <ion-item>
+          <ion-label floating>
+            <ion-icon name="lock" item-start class="text-white"></ion-icon>
+            Phone number
+          </ion-label>
+          <ion-input type="string" formControlName="phoneNumber"></ion-input>
+        </ion-item>
+        <p ion-text color="danger" class="text-12x has-error" *ngIf="onCompleteUserInformationForm.get('phoneNumber').touched && onCompleteUserInformationForm.get('phoneNumber').hasError('required')">This field is required</p>
+      </form>
+
+      <p text-right ion-text color="light" tappable (click)="forgotPass()"><strong>Forgot Password?</strong></p>
+
+      <div>
+        <button ion-button icon-start block color="secondary" (click)="completeSignUp()" [disabled]="!onCompleteUserInformationForm.valid">
+          <ion-icon name="log-in"></ion-icon>
+          Complete sign up
+        </button>
+      </div>
+    </div>
+	</div>
+</ion-content>

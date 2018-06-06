@@ -101,6 +101,10 @@ export class foodIonicApp {
 
           // logged user
           if (user) {
+            if(!user.cpf) {
+              this.rootPage = 'page-complete-user-information';
+            }
+
             this.restaurantService.recoveryActive(() => {
               const guestSubs = this.restaurantService.getGuestSubscriber();
 
