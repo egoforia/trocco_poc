@@ -104,10 +104,9 @@ export class foodIonicApp {
 
             if(user) {
                 this.usersService.getUser$(user.uid).subscribe(_user => {
-                    this.user = _user;
 
-                    if(this.user) {
-                        if(!this.user.cpf) {
+                    if(_user) {
+                        if(_user.phoneNumber != null) {
                             this.rootPage = 'page-complete-user-information';
                         } else {
                             this.restaurantService.recoveryActive(() => {
@@ -151,7 +150,7 @@ export class foodIonicApp {
     openPage(page) {
         // Reset the content nav to have just this page
         // we wouldn't want the back button to show in this scenario
-        this.nav.setRoot(page.component);
+        this.nav.setRoot(page);
     }
 
     logout() {

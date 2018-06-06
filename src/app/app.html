@@ -37,49 +37,20 @@
 	    </button>
 
 	    <ion-list class="user-list">
-	      <button menuClose ion-item (click)="openPage(homeItem)">
-	        <ion-icon item-left name="browsers"></ion-icon>
+	      <button menuClose ion-item (click)="openPage('page-home')">
+	        <ion-icon item-left name="home"></ion-icon>
 	        Home
 	      </button>
 
-	      <button menuClose ion-item (click)="openPage(messagesItem)">
-	        <ion-icon item-left name="mail"></ion-icon>
-	        Messages
-	        <ion-badge color="dark">
-	          2
-	        </ion-badge>
+	      <button menuClose ion-item (click)="openPage('page-my-account')">
+	        <ion-icon item-left name="heart"></ion-icon>
+	        Minha conta
 	      </button>
-	    </ion-list>
 
-
-	    <ion-list class="user-list">
-	      <ion-list-header no-margin>
-	        <span ion-text color="light" class="fw500">Menu</span>
-	      </ion-list-header>
-	      <button menuClose ion-item *ngFor="let menuItem of appMenuItems" (click)="openPage(menuItem)">
-	        <ion-icon item-left [name]="menuItem.icon"></ion-icon>
-	        {{menuItem.title}}
-	      </button>
-	    </ion-list>
-
-	    <ion-list class="user-list">
-	      <ion-list-header no-margin>
-	        <span ion-text color="light" class="fw500">Your Restaurant</span>
-	      </ion-list-header>
-	      <button menuClose ion-item *ngFor="let menuItem of yourRestaurantMenuItems" (click)="openPage(menuItem)">
-	        <ion-icon item-left [name]="menuItem.icon"></ion-icon>
-	        {{menuItem.title}}
-	      </button>
-	    </ion-list>
-
-	    <ion-list class="user-list">
-	      <ion-list-header no-margin>
-	        <span ion-text color="light" class="fw500">Help & Settings</span>
-	      </ion-list-header>
-	      <button menuClose ion-item *ngFor="let menuItem of helpMenuItems" (click)="openPage(menuItem)">
-	        <ion-icon item-left [name]="menuItem.icon"></ion-icon>
-	        {{menuItem.title}}
-	      </button>
+		  <button menuClose ion-item (click)="openPage('page-about')">
+			<ion-icon item-left name="help"></ion-icon>
+			Como Funciona
+		  </button>
 	    </ion-list>
 
 	  </ion-content>

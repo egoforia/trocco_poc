@@ -40,11 +40,12 @@ export class CompleteUserInformationPage {
             this.usersService.getUser$(user.uid).subscribe(_user => {
                 this.user = _user;
 
-                if(this.user.cpf) {
+                if(_user.phoneNumber) {
                     this.goToHome();
                 }
+
+                authSubscription.unsubscribe();
             });
-            authSubscription.unsubscribe();
         });
     }
 
