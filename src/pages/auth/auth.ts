@@ -126,10 +126,14 @@ export class AuthPage implements OnInit {
 		if (form.valid) {
 			this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(form.value.email, form.value.password)
 				.then(res => {
-					if(res.user.phoneNumber) {
-						this.goToHome();
+					if(res.user) {
+						if(res.user.phoneNumber) {
+							this.goToHome();
+						} else {
+							this.goToCompleteUserInformation();
+						}
 					} else {
-						this.goToCompleteUserInformation();
+						console.log('should go back')
 					}
 				})
 				.catch(error => {

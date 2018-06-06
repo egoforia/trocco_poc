@@ -37,11 +37,13 @@ export class CompleteUserInformationPage {
 
     initializeFirebase() {
         const authSubscription = this.afAuth.authState.subscribe(user => {
-            this.usersService.getUser$(user.uid).subscribe(_user => {
-                this.user = _user;
+            this.user = user;
 
-                if(_user.phoneNumber) {
-                    this.goToHome();
+            this.usersService.getUser$(user.uid).subscribe(_user => {
+                if(_user) {
+                    if(_user.phoneNumber) {
+                        this.goToHome();
+                    }
                 }
 
                 authSubscription.unsubscribe();

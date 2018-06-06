@@ -100,13 +100,12 @@ export class foodIonicApp {
         this.statusBar.overlaysWebView(false);
 
         const authSubscription = this.afAuth.authState.subscribe(user => {
-            console.log('authState subscribed user: ', JSON.stringify(user));
+            console.log(user.toJSON());
 
             if(user) {
-                this.usersService.getUser$(user.uid).subscribe(_user => {
-
+                const verifyUserCPF = this.usersService.getUser$(user.uid).subscribe(_user => {
                     if(_user) {
-                        if(_user.phoneNumber != null) {
+                        if(!_user.phoneNumber) {
                             this.rootPage = 'page-complete-user-information';
                         } else {
                             this.restaurantService.recoveryActive(() => {
@@ -125,6 +124,8 @@ export class foodIonicApp {
                           });
                       }
                     }
+
+                  verifyUserCPF.unsubscribe();
                 });
             } else {
                 this.rootPage = 'page-walkthrough';
