@@ -27,6 +27,7 @@ export class RestaurantDetailPage {
     restaurantopts: String = 'menu';
     dishes: Array<any>;
     public guest: Observable<any>;
+    verifyPage: Observable<any>;
 
     constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantFireService, public dishService: DishService, public toastCtrl: ToastController) {
         try {
@@ -45,9 +46,8 @@ export class RestaurantDetailPage {
     }
 
     redirectToCorrectPage() {
-        const verifyPage = this.restaurantService.getGuestSubscriber().subscribe(guest => {
+        this.verifyPage = this.restaurantService.getGuestSubscriber().subscribe(guest => {
             this.guest = guest;
-            verifyPage.unsubscribe();
 
             if(guest) {
                 switch (guest["status"]) {
@@ -61,17 +61,16 @@ export class RestaurantDetailPage {
                         this.navCtrl.setRoot('page-restaurant-detail');
                         break;
                     case 'ok':
-                        verifyPage.unsubscribe()
+                        this.verifyPage.unsubscribe()
                         this.navCtrl.setRoot('page-home');
                         break;
                     default:
-                        verifyPage.unsubscribe();
+                        this.verifyPage.unsubscribe();
                         this.navCtrl.setRoot('page-home');
                         break;
                 }
             } else {
-                verifyPage.unsubscribe();
-                this.navCtrl.setRoot('page-home');
+                this.verifyPage.unsubscribe();
             }
         });
     }
@@ -151,10 +150,10 @@ export class RestaurantDetailPage {
     }
 
     cancelOrderAndBackToHome() {
-        // this.navCtrl.setRoot('page-home');
-        this.restaurantService.cancelPreOrder().then(() => {
-
-        })
+        if(this.verifyPage) {
+            this.verifyPage.unsubscribe();
+            this.restaurantService.cancelPreOrder();
+        }
     }
 
 }
