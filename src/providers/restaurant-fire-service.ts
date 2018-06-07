@@ -80,4 +80,11 @@ export class RestaurantFireService {
     return this.afDB.object(`estabelecimentos/${this.active.id}/dishes/${dish_id}`).valueChanges();
   }
 
+  cancelPreOrder() {
+    const today = new Date().toISOString().slice(0, 10);
+    const preOrder = this.afDB.object(`guests/${today}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`);
+    if(preOrder) {
+      return preOrder.remove();
+    }
+  }
 }

@@ -63,14 +63,17 @@ export class CartFireService {
         return orders.map((order: any) => {
           this.clearTotal();
 
-          order.dishes.forEach(item => {
-            item.dish = this.restaurantService.getDish(item.dish_id);
-            // sum to total if order has been finalized
-            if (order.status == 'finalized')
-              item.dish.subscribe(dish => {
-                this.addToTotal(dish.price * item.quantity);
-              });
-          });
+          if(order.dishes != 0) {
+            order.dishes.forEach(item => {
+              item.dish = this.restaurantService.getDish(item.dish_id);
+              // sum to total if order has been finalized
+              if (order.status == 'finalized')
+                item.dish.subscribe(dish => {
+                  this.addToTotal(dish.price * item.quantity);
+                });
+            });
+          }
+
           return order;
         });
       });

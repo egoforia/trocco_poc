@@ -1,11 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, ActionSheetController, ActionSheet, NavController, NavParams, ToastController} from 'ionic-angular';
 
-// import {RestaurantService} from '../../providers/restaurant-service-mock';
+import {RestaurantFireService} from '../../providers/restaurant-fire-service';
 import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
 
-import { RestaurantFireService } from '../../providers/restaurant-fire-service'
 import { Observable } from 'rxjs/Observable';
 
 import leaflet from 'leaflet';
@@ -27,24 +26,54 @@ export class RestaurantDetailPage {
     restaurant: any;
     restaurantopts: String = 'menu';
     dishes: Array<any>;
+    public guest: Observable<any>;
 
     constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantFireService, public dishService: DishService, public toastCtrl: ToastController) {
-			// this.param = this.navParams.get('id');
-			// this.restaurantService.getItem(this.param).subscribe((restaurant: any) => {
-			// 	this.restaurant = restaurant;
-			// 	this.dishes = restaurant.dishes;
-			// });
-
-			this.restaurant = this.restaurantService.getActive();
-			this.dishes = this.restaurant.dishes;
-
-      // this.dishes = this.dishService.findAll()
+        try {
+            this.restaurant = this.restaurantService.getActive();
+            this.dishes = this.restaurant.dishes;
+            this.redirectToCorrectPage();
+        } catch(e) {
+            this.navCtrl.setRoot('page-home');
+        }
     }
 
     openDishDetail(dish, restaurant) {
-      this.navCtrl.push('page-dish-detail', {
-				'id': dish.id
-			});
+        this.navCtrl.push('page-dish-detail', {
+            'id': dish.id
+        });
+    }
+
+    redirectToCorrectPage() {
+        const verifyPage = this.restaurantService.getGuestSubscriber().subscribe(guest => {
+            this.guest = guest;
+            verifyPage.unsubscribe();
+
+            if(guest) {
+                switch (guest["status"]) {
+                    case 'waiting':
+                        this.navCtrl.setRoot('page-restaurant-detail');
+                        break;
+                    case 'open':
+                        this.navCtrl.setRoot('page-restaurant-detail');
+                        break;
+                    case 'preparing':
+                        this.navCtrl.setRoot('page-restaurant-detail');
+                        break;
+                    case 'ok':
+                        verifyPage.unsubscribe()
+                        this.navCtrl.setRoot('page-home');
+                        break;
+                    default:
+                        verifyPage.unsubscribe();
+                        this.navCtrl.setRoot('page-home');
+                        break;
+                }
+            } else {
+                verifyPage.unsubscribe();
+                this.navCtrl.setRoot('page-home');
+            }
+        });
     }
 
     favorite(restaurant) {
@@ -86,17 +115,17 @@ export class RestaurantDetailPage {
         actionSheet.present();
     }
 
-	  openCart() {
-	    this.navCtrl.push('page-cart');
-	  }
+    openCart() {
+        this.navCtrl.push('page-cart');
+    }
 
-		openCheck() {
-			this.navCtrl.push('page-cart');
-		}
+    openCheck() {
+        this.navCtrl.push('page-cart');
+    }
 
-		openOrder() {
-			this.navCtrl.push('page-orders');
-		}
+    openOrder() {
+        this.navCtrl.push('page-orders');
+    }
 
     showMarkers() {
         if (this.markersGroup) {
@@ -119,6 +148,13 @@ export class RestaurantDetailPage {
           }).addTo(this.map);
           this.showMarkers();
       }, 200)
+    }
+
+    cancelOrderAndBackToHome() {
+        // this.navCtrl.setRoot('page-home');
+        this.restaurantService.cancelPreOrder().then(() => {
+
+        })
     }
 
 }

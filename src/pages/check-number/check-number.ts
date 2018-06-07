@@ -23,11 +23,35 @@ export class CheckNumberPage {
   guest: Observable<any>;
   constructor(public navCtrl: NavController, public navParams: NavParams, public restaurantService: RestaurantFireService) {
     this.restaurant = this.restaurantService.getActive();
+    this.redirectToCorrectPage();
+  }
 
+  redirectToCorrectPage() {
     this.restaurantService.getGuestSubscriber().subscribe(guest => {
-      console.log(guest);
-      if (guest["status"] != 'waiting')
-        this.navCtrl.push('page-restaurant-detail');
+      if(guest) {
+        switch (guest["status"]) {
+          case 'waiting':
+            this.navCtrl.setRoot('page-restaurant-detail');
+            break;
+          case 'open':
+            this.navCtrl.setRoot('page-restaurant-detail');
+            break;
+          case 'preparing':
+            this.navCtrl.setRoot('page-restaurant-detail');
+            break;
+          case 'ok':
+            this.navCtrl.setRoot('page-home');
+            break;
+          case 'canceling':
+            this.navCtrl.setRoot('page-home');
+            break;
+          default:
+            this.navCtrl.setRoot('page-home');
+            break;
+        }
+      } else {
+        this.navCtrl.setRoot('page-home');
+      }
     });
   }
 

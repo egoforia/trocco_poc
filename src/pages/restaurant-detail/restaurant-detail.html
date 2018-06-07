@@ -1,5 +1,11 @@
 <ion-header>
   <ion-navbar color="primary">
+		<ion-buttons start>
+			<button [hidden]="guest && guest['status'] != 'waiting'" ion-button (click)="cancelOrderAndBackToHome()">
+				<ion-icon name="arrow-back"></ion-icon>
+			</button>
+		</ion-buttons>
+
     <ion-title>
       <span ion-text>Restaurant</span>
     </ion-title>
@@ -37,7 +43,7 @@
 		<ion-badge color="secondary">{{restaurant.tags}}</ion-badge>
       	<ion-badge color="dark" class="text-11x">
 					<ion-icon name="star"></ion-icon>
-        	{{ restaurant.rating | number:'1.1' }}
+					{{ restaurant.rating | number:'1.1' }}
         </ion-badge>
 			</div>
     </ion-card-content>

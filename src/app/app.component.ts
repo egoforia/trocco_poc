@@ -104,8 +104,6 @@ export class foodIonicApp {
         this.statusBar.overlaysWebView(false);
 
         const authSubscription = this.afAuth.authState.subscribe(user => {
-            console.log(user.toJSON());
-
             if(user) {
                 const verifyUserCPF = this.usersService.getUser$(user.uid).subscribe(_user => {
                   this.user = JSON.parse(JSON.stringify(_user));
@@ -116,16 +114,22 @@ export class foodIonicApp {
                         } else {
                           this.restaurantService.recoveryActive((res) => {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
-                                if (guestSubs) {
-                                  this.rootPage = 'page-restaurant-detail';
+                            guestSubs.subscribe(guest => {
+                                if(guest) {
+                                  if(guest.status != 'canceling' || guest.status != 'ok') {
+                                    this.rootPage = 'page-restaurant-detail';
+                                  } else {
+                                    this.rootPage = 'page-home';
+                                  }
                                 } else {
                                   this.rootPage = 'page-home';
                                 }
-                              },
-                              (e: Error) => {
-                                console.error(e);
-                                this.logout();
-                          });
+                            });
+                        },
+                        (e: Error) => {
+                            console.error(e);
+                            this.logout();
+                        });
                       }
                     }
 
