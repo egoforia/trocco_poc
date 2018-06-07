@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import { IonicPage, NavController, AlertController, ToastController, MenuController, Platform } from 'ionic-angular';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { IonicPage, NavController, AlertController, MenuController } from 'ionic-angular';
 import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UsersFireService } from '../../providers/users-fire-service';
+import User from '../../interfaces/User';
 
 @IonicPage({
     name: 'page-complete-user-information',
@@ -17,7 +18,7 @@ import { UsersFireService } from '../../providers/users-fire-service';
 })
 export class CompleteUserInformationPage {
     public onCompleteUserInformationForm: FormGroup;
-    public user: any;
+    public user: User;
 
     constructor(
         private _fb: FormBuilder,
@@ -25,7 +26,6 @@ export class CompleteUserInformationPage {
         public forgotCtrl: AlertController,
         public menu: MenuController,
         public afAuth: AngularFireAuth,
-        private platform: Platform,
         private usersService: UsersFireService,
         public firebase: Firebase,
         public afDB: AngularFireDatabase
@@ -37,11 +37,13 @@ export class CompleteUserInformationPage {
 
     initializeFirebase() {
         const authSubscription = this.afAuth.authState.subscribe(user => {
-            this.user = user;
+            this.user = JSON.parse(JSON.stringify(user));
 
             this.usersService.getUser$(user.uid).subscribe(_user => {
                 if(_user) {
-                    if(_user.phoneNumber) {
+                    this.user = JSON.parse(JSON.stringify(_user));
+
+                    if (this.user.phoneNumber) {
                         this.goToHome();
                     }
                 }

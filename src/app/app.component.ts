@@ -13,6 +13,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
+import User from '../interfaces/User';
+
 export interface MenuItem {
     title: string;
     component: any;
@@ -48,6 +50,8 @@ export class foodIonicApp {
     helpMenuItems: Array<MenuItem>;
 
     items: Observable<any[]>;
+
+    user: User;
 
     constructor(
       public platform: Platform,
@@ -104,17 +108,17 @@ export class foodIonicApp {
 
             if(user) {
                 const verifyUserCPF = this.usersService.getUser$(user.uid).subscribe(_user => {
-                    if(_user) {
-                        if(!_user.phoneNumber) {
+                  this.user = JSON.parse(JSON.stringify(_user));
+
+                    if(this.user) {
+                        if(!this.user.phoneNumber) {
                             this.rootPage = 'page-complete-user-information';
                         } else {
-                            this.restaurantService.recoveryActive(() => {
-                                const guestSubs = this.restaurantService.getGuestSubscriber();
-
+                          this.restaurantService.recoveryActive((res) => {
+                            const guestSubs = this.restaurantService.getGuestSubscriber();
                                 if (guestSubs) {
                                   this.rootPage = 'page-restaurant-detail';
-                                }
-                                else {
+                                } else {
                                   this.rootPage = 'page-home';
                                 }
                               },
