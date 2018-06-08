@@ -31,6 +31,8 @@ import { RestaurantFireService } from "../providers/restaurant-fire-service";
 import { CartFireService } from "../providers/cart-fire-service";
 import { OrdersFireService } from "../providers/orders-fire-service";
 import { UsersFireService } from '../providers/users-fire-service';
+import { DishCategoriesService } from '../providers/dish-categories-service';
+
 
 import { Facebook } from '@ionic-native/facebook';
 import { OrdersLobbyFireService } from '../providers/orders-lobby-fire-service';
@@ -88,6 +90,7 @@ export const firebaseConfig = {
     OrdersFireService,
     UsersFireService,
     OrdersLobbyFireService,
+    DishCategoriesService,
     Facebook
   ]
 })

@@ -4,6 +4,7 @@ import {IonicPage, ActionSheetController, ActionSheet, NavController, NavParams,
 import {RestaurantFireService} from '../../providers/restaurant-fire-service';
 import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
+import {DishCategoriesService} from '../../providers/dish-categories-service';
 
 import { Observable } from 'rxjs/Observable';
 
@@ -26,13 +27,25 @@ export class RestaurantDetailPage {
     restaurant: any;
     restaurantopts: String = 'menu';
     dishes: Array<any>;
-    public guest: Observable<any>;
+    categories: Array<any>;
+    guest: Observable<any>;
     verifyPage: Observable<any>;
+    selectedCategory: String = '';
 
-    constructor(public actionSheetCtrl: ActionSheetController, public navCtrl: NavController, public navParams: NavParams, public cartService: CartService, public restaurantService: RestaurantFireService, public dishService: DishService, public toastCtrl: ToastController) {
+    constructor(
+        public actionSheetCtrl: ActionSheetController,
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public cartService: CartService,
+        public restaurantService: RestaurantFireService,
+        public dishService: DishService,
+        public toastCtrl: ToastController,
+        private dishCategoriesService: DishCategoriesService
+        ) {
         try {
             this.restaurant = this.restaurantService.getActive();
             this.dishes = this.restaurant.dishes;
+            this.categories = this.dishCategoriesService.findAll(this.dishes);
             this.redirectToCorrectPage();
         } catch(e) {
             this.navCtrl.setRoot('page-home');
@@ -45,73 +58,26 @@ export class RestaurantDetailPage {
         });
     }
 
+    filterDishesByCategory(category) {
+        this.selectedCategory = category;
+    }
+
+    resetSelectedCategory() {
+        this.selectedCategory = '';
+    }
+
     redirectToCorrectPage() {
         this.verifyPage = this.restaurantService.getGuestSubscriber().subscribe(guest => {
             this.guest = guest;
 
             if(guest) {
                 switch (guest["status"]) {
-                    case 'waiting':
-                        this.navCtrl.setRoot('page-restaurant-detail');
-                        break;
-                    case 'open':
-                        this.navCtrl.setRoot('page-restaurant-detail');
-                        break;
-                    case 'preparing':
-                        this.navCtrl.setRoot('page-restaurant-detail');
-                        break;
                     case 'ok':
-                        this.verifyPage.unsubscribe()
                         this.navCtrl.setRoot('page-home');
                         break;
-                    default:
-                        this.verifyPage.unsubscribe();
-                        this.navCtrl.setRoot('page-home');
-                        break;
-                }
-            } else {
-                this.verifyPage.unsubscribe();
+                    }
             }
         });
-    }
-
-    favorite(restaurant) {
-      // this.restaurantService.favorite(restaurant)
-      //     .then(restaurant => {
-      //         let toast = this.toastCtrl.create({
-      //             message: 'Restaurant added to your favorites',
-      //             cssClass: 'mytoast',
-      //             duration: 2000
-      //         });
-      //         toast.present(toast);
-      //     });
-    }
-
-    share(restaurant) {
-        let actionSheet: ActionSheet = this.actionSheetCtrl.create({
-            title: 'Share via',
-            buttons: [
-                {
-                    text: 'Twitter',
-                    handler: () => console.log('share via twitter')
-                },
-                {
-                    text: 'Facebook',
-                    handler: () => console.log('share via facebook')
-                },
-                {
-                    text: 'Email',
-                    handler: () => console.log('share via email')
-                },
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => console.log('cancel share')
-                }
-            ]
-        });
-
-        actionSheet.present();
     }
 
     openCart() {

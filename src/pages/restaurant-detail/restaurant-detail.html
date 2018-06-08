@@ -9,15 +9,6 @@
     <ion-title>
       <span ion-text>Restaurant</span>
     </ion-title>
-
-    <ion-buttons end>
-      <button ion-button (click)="favorite(restaurant)">
-        <ion-icon name="heart"></ion-icon>
-      </button>
-      <button ion-button (click)="share(restaurant)">
-          <ion-icon name="share"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -52,7 +43,7 @@
 		<ion-row no-padding>
 			<ion-col>
 			  <ion-segment [(ngModel)]="restaurantopts" padding-horizontal>
-			    <ion-segment-button value="menu">
+			    <ion-segment-button value="menu" (click)="resetSelectedCategory()">
 			      Menu
 			    </ion-segment-button>
 			    <ion-segment-button value="reviews">
@@ -66,7 +57,7 @@
 				<div [ngSwitch]="restaurantopts" padding>
 					<div *ngSwitchCase="'menu'">
 
-						<ion-list>
+						<ion-list [hidden]="selectedCategory === ''">
 						  <ion-item no-padding *ngFor="let dish of dishes" tapplable (click)="openDishDetail(dish, restaurant)">
 						    <ion-thumbnail item-start>
 						      <img src="{{dish.picture}}">
@@ -75,6 +66,12 @@
 			          <p ion-text color="primary" class="text-11x">{{ dish.ingredients }}</p>
 						    <button ion-button clear class="green-bg text-white" item-end>{{ dish.price | currency }}</button>
 						  </ion-item>
+						</ion-list>
+
+						<ion-list [hidden]="selectedCategory !== ''">
+							<ion-item no-padding *ngFor="let category of categories" tapplable (click)="filterDishesByCategory(category)">
+								<h2 ion-text color="dark" class="fw500">{{category}}</h2>
+							</ion-item>
 						</ion-list>
 
 						<br><br><br><br>

@@ -17,6 +17,10 @@ export class RestaurantFireService {
     this.restaurants = this.afDB.list('estabelecimentos').valueChanges();
   }
 
+  today() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
   findAll() {
     return this.restaurants;
   }
@@ -38,7 +42,6 @@ export class RestaurantFireService {
           this.afDB.object(`estabelecimentos/${user.guest_on}`).valueChanges().subscribe((restaurant: any) => {
             if (restaurant) {
               this.active = restaurant;
-
               if (then instanceof Function)
                 then();
             }
@@ -54,8 +57,7 @@ export class RestaurantFireService {
   addGuest(restaurant) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        const today = new Date().toISOString().slice(0, 10);
-        this.afDB.object(`guests/${today}/${restaurant.id}/${user.uid}`)
+        this.afDB.object(`guests/${this.today()}/${restaurant.id}/${user.uid}`)
           .set({'status': 'waiting'});
         this.afDB.object(`users/${user.uid}`)
           .update({"guest_on": restaurant.id});
@@ -65,8 +67,7 @@ export class RestaurantFireService {
 
   getGuestSubscriber() {
     if (this.active.id) {
-      const today = new Date().toISOString().slice(0, 10);
-      return this.afDB.object(`guests/${today}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`).valueChanges();
+      return this.afDB.object(`guests/${this.today()}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`).valueChanges();
     }
 
     return null;
@@ -81,8 +82,7 @@ export class RestaurantFireService {
   }
 
   cancelPreOrder() {
-    const today = new Date().toISOString().slice(0, 10);
-    const preOrder = this.afDB.object(`guests/${today}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`);
+    const preOrder = this.afDB.object(`guests/${this.today()}/${this.active.id}/${this.afAuth.auth.currentUser.uid}`);
     if(preOrder) {
       return preOrder.remove();
     }
