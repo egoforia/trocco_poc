@@ -1,5 +1,5 @@
 export default interface User {
-    cpf: string;
+    rg: string;
     displayName: string;
     email: string;
     phoneNumber: string;

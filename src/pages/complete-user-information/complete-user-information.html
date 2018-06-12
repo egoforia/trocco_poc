@@ -18,11 +18,11 @@
         <ion-item>
           <ion-label floating>
             <ion-icon name="mail" item-start class="text-white"></ion-icon>
-            CPF
+            RG
           </ion-label>
-          <ion-input type="string" formControlName="cpf"></ion-input>
+          <ion-input type="string" formControlName="rg"></ion-input>
         </ion-item>
-        <p ion-text color="danger" class="text-12x has-error" *ngIf="onCompleteUserInformationForm.get('cpf').touched && onCompleteUserInformationForm.get('cpf').hasError('required')">This field is required</p>
+        <p ion-text color="danger" class="text-12x has-error" *ngIf="onCompleteUserInformationForm.get('rg').touched && onCompleteUserInformationForm.get('rg').hasError('required')">This field is required</p>
 
         <ion-item>
           <ion-label floating>

@@ -55,7 +55,7 @@ export class CompleteUserInformationPage {
 
     ngOnInit() {
         this.onCompleteUserInformationForm = this._fb.group({
-            'cpf': ['', [
+            'rg': ['', [
                 Validators.required,
                 Validators.minLength(11)
             ]],
@@ -76,7 +76,7 @@ export class CompleteUserInformationPage {
         const user = JSON.parse(JSON.stringify(this.user));
 
         if(form.valid) {
-            user.cpf = form.value.cpf;
+            user.rg = form.value.rg;
             user.phoneNumber = form.value.phoneNumber;
 
             this.usersService.saveUser(user).then(res => {

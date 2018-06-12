@@ -105,7 +105,7 @@ export class foodIonicApp {
 
         const authSubscription = this.afAuth.authState.subscribe(user => {
             if(user) {
-                const verifyUserCPF = this.usersService.getUser$(user.uid).subscribe(_user => {
+                const verifyUserRG = this.usersService.getUser$(user.uid).subscribe(_user => {
                   this.user = JSON.parse(JSON.stringify(_user));
 
                     if(this.user) {
@@ -133,7 +133,7 @@ export class foodIonicApp {
                       }
                     }
 
-                  verifyUserCPF.unsubscribe();
+                  verifyUserRG.unsubscribe();
                 });
             } else {
                 this.rootPage = 'page-walkthrough';
