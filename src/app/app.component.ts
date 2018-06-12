@@ -116,7 +116,7 @@ export class foodIonicApp {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
                             guestSubs.subscribe(guest => {
                                 if(guest) {
-                                  if(guest.status != 'canceling' || guest.status != 'ok') {
+                                  if(guest.status != 'canceled' || guest.status != 'ok') {
                                     this.rootPage = 'page-restaurant-detail';
                                   } else {
                                     this.rootPage = 'page-home';

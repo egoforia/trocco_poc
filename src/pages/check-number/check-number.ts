@@ -42,7 +42,7 @@ export class CheckNumberPage {
           case 'ok':
             this.navCtrl.setRoot('page-home');
             break;
-          case 'canceling':
+          case 'canceled':
             this.navCtrl.setRoot('page-home');
             break;
           default:
