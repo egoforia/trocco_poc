@@ -21,7 +21,6 @@ import leaflet from 'leaflet';
 })
 export class RestaurantDetailPage {
 	param: number;
-
     map;
     markersGroup;
     restaurant: any;
@@ -29,7 +28,7 @@ export class RestaurantDetailPage {
     dishes: Array<any>;
     categories: Array<any>;
     guest: Observable<any>;
-    verifyPage: Observable<any>;
+    verifyPage: any;
     selectedCategory: String = '';
 
     constructor(
@@ -67,7 +66,7 @@ export class RestaurantDetailPage {
     }
 
     redirectToCorrectPage() {
-        this.verifyPage = this.restaurantService.getGuestSubscriber().subscribe(guest => {
+        this.verifyPage = this.restaurantService.getGuestSubscriber().subscribe((guest: any) => {
             this.guest = guest;
 
             if(guest) {

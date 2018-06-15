@@ -72,7 +72,7 @@ export class RestaurantListPage {
     }
 
     findAll() {
-    	this.restaurants = this.restaurantService.findAll();
+        this.restaurants = this.restaurantService.findAll();
     }
 
     showMap() {

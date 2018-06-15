@@ -80,7 +80,7 @@ export class HomePage {
 	}
 
 	findAll() {
-	  this.restaurants = this.service.findAll();
+    this.restaurants = this.service.findAll();
 	}
 
   alertLocation() {
