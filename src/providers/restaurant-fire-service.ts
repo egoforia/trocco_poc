@@ -55,10 +55,10 @@ export class RestaurantFireService {
   }
 
   addGuest(restaurant) {
-    this.afAuth.authState.subscribe(user => {
+    this.afAuth.authState.subscribe((user: any) => {
       if (user) {
         this.afDB.object(`guests/${this.today()}/${restaurant.id}/${user.uid}`)
-          .set({'status': 'waiting'});
+          .set({'status': 'waiting', created_at: + new Date()});
         this.afDB.object(`users/${user.uid}`)
           .update({"guest_on": restaurant.id});
       }

@@ -26,31 +26,19 @@ export interface MenuItem {
 })
 export class foodIonicApp {
     @ViewChild(Nav) nav: Nav;
-
   	tabsPlacement: string = 'bottom';
   	tabsLayout: string = 'icon-top';
-
     rootPage: any;
     showMenu: boolean = true;
-
     homeItem: any;
-
     initialItem: any;
-
     messagesItem: any;
-
     settingsItem: any;
-
     appMenuItems: Array<MenuItem>;
-
     yourRestaurantMenuItems: Array<MenuItem>;
-
     accountMenuItems: Array<MenuItem>;
-
     helpMenuItems: Array<MenuItem>;
-
     items: Observable<any[]>;
-
     user: User;
 
     constructor(
@@ -103,7 +91,7 @@ export class foodIonicApp {
       this.platform.ready().then(() => {
         this.statusBar.overlaysWebView(false);
 
-        const authSubscription = this.afAuth.authState.subscribe(user => {
+        const authSubscription = this.afAuth.authState.subscribe((user: any) => {
             if(user) {
                 const verifyUserRG = this.usersService.getUser$(user.uid).subscribe(_user => {
                   this.user = JSON.parse(JSON.stringify(_user));
@@ -114,7 +102,7 @@ export class foodIonicApp {
                         } else {
                           this.restaurantService.recoveryActive((res) => {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
-                            guestSubs.subscribe(guest => {
+                            guestSubs.subscribe((guest: any) => {
                                 if(guest) {
                                   if(guest.status != 'canceled' || guest.status != 'ok') {
                                     this.rootPage = 'page-restaurant-detail';

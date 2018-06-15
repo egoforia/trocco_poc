@@ -40,8 +40,7 @@ export class RestaurantListPage {
     }
 
     openRestaurantDetail(restaurant: any) {
-			this.restaurantService.setActive(restaurant);
-
+        this.restaurantService.setActive(restaurant);
   		this.navCtrl.push('page-restaurant-detail');
     }
 
