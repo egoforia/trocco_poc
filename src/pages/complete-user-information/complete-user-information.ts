@@ -33,6 +33,8 @@ export class CompleteUserInformationPage {
         this.initializeFirebase();
         this.menu.swipeEnable(false);
         this.menu.enable(false);
+        // RG: 99.999.999-9
+        // Telefone: (22) 99799-5573
     }
 
     initializeFirebase() {

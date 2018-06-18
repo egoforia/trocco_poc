@@ -3,40 +3,29 @@ import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
-
 import { foodIonicApp } from './app.component';
-
 import { PipesModule } from '../pipes/pipes.module';
-
-import {MessageService} from "../providers/message-service-mock";
-import {RestaurantService} from "../providers/restaurant-service-mock";
-import {DishService} from "../providers/dish-service-mock";
-import {CategoryService} from "../providers/category-service-mock";
-import {CartService} from "../providers/cart-service-mock";
-
+import { MessageService } from "../providers/message-service-mock";
+import { RestaurantService } from "../providers/restaurant-service-mock";
+import { DishService } from "../providers/dish-service-mock";
+import { CategoryService } from "../providers/category-service-mock";
+import { CartService } from "../providers/cart-service-mock";
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
-
 import { Firebase } from '@ionic-native/firebase';
-
 import { AngularFireModule } from 'angularfire2';
-// for AngularFireDatabase
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
-// for AngularFireAuth
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireAuth } from 'angularfire2/auth';
-
 import { RestaurantFireService } from "../providers/restaurant-fire-service";
 import { CartFireService } from "../providers/cart-fire-service";
 import { OrdersFireService } from "../providers/orders-fire-service";
 import { UsersFireService } from '../providers/users-fire-service';
 import { DishCategoriesService } from '../providers/dish-categories-service';
-
-
 import { Facebook } from '@ionic-native/facebook';
 import { OrdersLobbyFireService } from '../providers/orders-lobby-fire-service';
-
+import { FormsModule } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
@@ -55,7 +44,7 @@ export const firebaseConfig = {
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(foodIonicApp, {
-	  preloadModules: true,
+	    preloadModules: true,
       scrollPadding: false,
       scrollAssist: true,
       autoFocusAssist: false
@@ -67,7 +56,9 @@ export const firebaseConfig = {
     PipesModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule,
+    TextMaskModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

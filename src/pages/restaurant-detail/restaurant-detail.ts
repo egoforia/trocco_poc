@@ -1,13 +1,9 @@
 import {Component} from '@angular/core';
-import {IonicPage, ActionSheetController, ActionSheet, NavController, NavParams, ToastController} from 'ionic-angular';
-
+import {IonicPage, ActionSheetController, NavController, NavParams, ToastController} from 'ionic-angular';
 import {RestaurantFireService} from '../../providers/restaurant-fire-service';
 import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
 import {DishCategoriesService} from '../../providers/dish-categories-service';
-
-import { Observable } from 'rxjs/Observable';
-
 import leaflet from 'leaflet';
 
 @IonicPage({
@@ -27,7 +23,7 @@ export class RestaurantDetailPage {
     restaurantopts: String = 'menu';
     dishes: Array<any>;
     categories: Array<any>;
-    guest: Observable<any>;
+    guest: any;
     verifyPage: any;
     selectedCategory: String = '';
 
