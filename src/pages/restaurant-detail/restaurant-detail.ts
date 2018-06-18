@@ -57,7 +57,7 @@ export class RestaurantDetailPage {
         });
     }
 
-    filterDishesByCategory(category) {
+    selectCategoryToView(category) {
         this.selectedCategory = category;
     }
 
@@ -121,4 +121,19 @@ export class RestaurantDetailPage {
         }
     }
 
+    showMenu() {
+        if(!this.guest) {
+            return false;
+        } else {
+            if(this.guest.status == 'waiting') {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    filterDishesByCategory(category) {
+        return this.dishes.filter((dish) => dish.category == category);
+    }
 }

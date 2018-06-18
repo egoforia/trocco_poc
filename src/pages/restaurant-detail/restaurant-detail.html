@@ -39,7 +39,7 @@
 			</div>
     </ion-card-content>
 
-	<ion-grid no-padding fixed>
+	<ion-grid no-padding fixed *ngIf="showMenu()">
 		<ion-row no-padding>
 			<ion-col>
 			  <ion-segment [(ngModel)]="restaurantopts" padding-horizontal>
@@ -58,7 +58,7 @@
 					<div *ngSwitchCase="'menu'">
 
 						<ion-list [hidden]="selectedCategory === ''">
-						  <ion-item no-padding *ngFor="let dish of dishes" tapplable (click)="openDishDetail(dish, restaurant)">
+						  <ion-item no-padding *ngFor="let dish of filterDishesByCategory(selectedCategory)" tapplable (click)="openDishDetail(dish, restaurant)">
 						    <ion-thumbnail item-start>
 						      <img src="{{dish.picture}}">
 						    </ion-thumbnail>
@@ -69,7 +69,7 @@
 						</ion-list>
 
 						<ion-list [hidden]="selectedCategory !== ''">
-							<ion-item no-padding *ngFor="let category of categories" tapplable (click)="filterDishesByCategory(category)">
+							<ion-item no-padding *ngFor="let category of categories" tapplable (click)="selectCategoryToView(category)">
 								<h2 ion-text color="dark" class="fw500">{{category}}</h2>
 							</ion-item>
 						</ion-list>
