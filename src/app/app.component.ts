@@ -8,11 +8,8 @@ import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { RestaurantFireService } from '../providers/restaurant-fire-service'
 import { UsersFireService } from '../providers/users-fire-service';
-
 import { Observable } from 'rxjs/Observable';
-
 import { AngularFireAuth } from 'angularfire2/auth';
-
 import User from '../interfaces/User';
 
 export interface MenuItem {

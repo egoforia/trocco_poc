@@ -24,8 +24,6 @@ import { UsersFireService } from '../providers/users-fire-service';
 import { DishCategoriesService } from '../providers/dish-categories-service';
 import { Facebook } from '@ionic-native/facebook';
 import { OrdersLobbyFireService } from '../providers/orders-lobby-fire-service';
-import { FormsModule } from '@angular/forms';
-import { TextMaskModule } from 'angular2-text-mask';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCpeYNLer4m1nEG_ZT6N50dnoZfbeIpj4Y",
@@ -56,9 +54,7 @@ export const firebaseConfig = {
     PipesModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule,
-    FormsModule,
-    TextMaskModule
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

@@ -5,6 +5,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UsersFireService } from '../../providers/users-fire-service';
+
 import User from '../../interfaces/User';
 
 @IonicPage({
@@ -33,8 +34,6 @@ export class CompleteUserInformationPage {
         this.initializeFirebase();
         this.menu.swipeEnable(false);
         this.menu.enable(false);
-        // RG: 99.999.999-9
-        // Telefone: (22) 99799-5573
     }
 
     initializeFirebase() {
@@ -59,11 +58,11 @@ export class CompleteUserInformationPage {
         this.onCompleteUserInformationForm = this._fb.group({
             'rg': ['', [
                 Validators.required,
-                Validators.minLength(11)
+                Validators.minLength(9)
             ]],
             'phoneNumber': ['', [
                 Validators.required,
-                Validators.minLength(9),
+                Validators.minLength(11),
                 Validators.maxLength(11)
             ]]
         });
