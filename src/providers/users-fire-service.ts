@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class UsersFireService {
-
   constructor(public afDB: AngularFireDatabase) {
 
   }
@@ -28,4 +26,7 @@ export class UsersFireService {
     return this.getUserRef(user.uid).update(user);
   }
 
+  addDeviceToken(user_id: string, token: string) {
+    return this.afDB.list(`users/${user_id}/devices`).push(token);
+  }
 }

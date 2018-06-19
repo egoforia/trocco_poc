@@ -1,10 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform} from 'ionic-angular';
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
-
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { Firebase } from '@ionic-native/firebase';
-
 import { AngularFireDatabase } from 'angularfire2/database';
 import { RestaurantFireService } from '../providers/restaurant-fire-service'
 import { UsersFireService } from '../providers/users-fire-service';
@@ -49,7 +47,7 @@ export class foodIonicApp {
       private restaurantService: RestaurantFireService
     ) {
         this.initializeApp();
-        this.initializeFirebase();
+        // this.initializeFirebase();
 
         this.homeItem = { component: 'page-home' };
         this.messagesItem = { component: 'page-message-list'};
@@ -87,38 +85,34 @@ export class foodIonicApp {
     initializeApp() {
       this.platform.ready().then(() => {
         this.statusBar.overlaysWebView(false);
-
         const authSubscription = this.afAuth.authState.subscribe((user: any) => {
             if(user) {
                 const verifyUserRG = this.usersService.getUser$(user.uid).subscribe(_user => {
-                  this.user = JSON.parse(JSON.stringify(_user));
-
-                    if(this.user) {
-                        if(!this.user.phoneNumber) {
-                            this.rootPage = 'page-complete-user-information';
-                        } else {
-                          this.restaurantService.recoveryActive((res) => {
+                    this.user = JSON.parse(JSON.stringify(_user));
+                    this.saveUserDeviceToken(this.user);
+                    if(!this.user.phoneNumber) {
+                        this.rootPage = 'page-complete-user-information';
+                    } else {
+                        this.restaurantService.recoveryActive((res) => {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
                             guestSubs.subscribe((guest: any) => {
                                 if(guest) {
-                                  if(guest.status != 'canceled' || guest.status != 'ok') {
+                                    if(guest.status != 'canceled' || guest.status != 'ok') {
                                     this.rootPage = 'page-restaurant-detail';
-                                  } else {
+                                    } else {
                                     this.rootPage = 'page-home';
-                                  }
+                                    }
                                 } else {
-                                  this.rootPage = 'page-home';
+                                    this.rootPage = 'page-home';
                                 }
                             });
-                        },
-                        (e: Error) => {
+                        }, (e: Error) => {
                             console.error(e);
                             this.logout();
                         });
-                      }
                     }
-
-                  verifyUserRG.unsubscribe();
+        
+                    verifyUserRG.unsubscribe();
                 });
             } else {
                 this.rootPage = 'page-walkthrough';
@@ -139,6 +133,12 @@ export class foodIonicApp {
       this.firebase.getToken()
         .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
         .catch(error => console.error('Error getting token', error));
+    }
+
+    saveUserDeviceToken(user: any) {
+        this.firebase.getToken().then(token => {
+            this.usersService.addDeviceToken(user.uid, token);
+        });
     }
 
     openPage(page) {

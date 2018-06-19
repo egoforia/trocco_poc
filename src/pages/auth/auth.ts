@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { IonicPage, NavController, AlertController, ToastController, MenuController, Platform } from 'ionic-angular';
-
-import { map, take, debounceTime } from 'rxjs/operators';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+import { Facebook } from '@ionic-native/facebook';
 import { UsersFireService } from '../../providers/users-fire-service';
 
 @IonicPage({
