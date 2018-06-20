@@ -27,6 +27,6 @@ export class UsersFireService {
   }
 
   addDeviceToken(user_id: string, token: string) {
-    return this.afDB.list(`users/${user_id}/devices`).push(token);
+    return this.afDB.object(`users/${user_id}`).update({device_token_id: token});
   }
 }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, AlertController, MenuController, ToastController, PopoverController, ModalController } from 'ionic-angular';
-
-// import {RestaurantService} from '../../providers/restaurant-service-mock';
 import { RestaurantFireService } from '../../providers/restaurant-fire-service';
 import { Observable } from 'rxjs/Observable';
+import { Firebase } from '@ionic-native/firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage({
 	name: 'page-home',
@@ -22,7 +22,17 @@ export class HomePage {
   searchKey: string = "";
   yourLocation: string = "463 Beacon Street Guest House";
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public popoverCtrl: PopoverController, public locationCtrl: AlertController, public modalCtrl: ModalController, public toastCtrl: ToastController, public service: RestaurantFireService) {
+  constructor(
+    public navCtrl: NavController,
+    public menuCtrl: MenuController,
+    public popoverCtrl: PopoverController,
+    public locationCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public toastCtrl: ToastController,
+    public service: RestaurantFireService,
+    public firebase: Firebase,
+    public afAuth: AngularFireAuth,
+  ) {
 		this.menuCtrl.swipeEnable(true, 'authenticated');
 		this.menuCtrl.enable(true);
 		this.findAll();
@@ -133,4 +143,15 @@ export class HomePage {
       this.navCtrl.canSwipeBack();
   }
 
+  ionViewDidLoad() {
+    this.afAuth.authState.subscribe((user: any) => {
+      this.saveUserDeviceToken(user);    
+    })
+  }
+
+  saveUserDeviceToken(user: any) {
+    this.firebase.getToken().then(token => {
+      this.usersService.addDeviceToken(user.uid, token);
+    });
+  }
 }
