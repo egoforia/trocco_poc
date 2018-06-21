@@ -87,13 +87,13 @@ export class foodIonicApp {
         this.statusBar.overlaysWebView(false);
         const authSubscription = this.afAuth.authState.subscribe((user: any) => {
             if(user) {
-                const verifyUserRG = this.usersService.getUser$(user.uid).subscribe(_user => {
+                const verifyUserRG = this.usersService.getUser$(user.uid).subscribe((_user: any) => {
                     this.user = JSON.parse(JSON.stringify(_user));
                     this.saveUserDeviceToken(this.user);
                     if(!this.user.phoneNumber) {
                         this.rootPage = 'page-complete-user-information';
                     } else {
-                        this.restaurantService.recoveryActive((res) => {
+                        this.restaurantService.recoveryActive((_res) => {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
                             guestSubs.subscribe((guest: any) => {
                                 if(guest) {
@@ -150,5 +150,13 @@ export class foodIonicApp {
     logout() {
       this.afAuth.auth.signOut();
       this.nav.setRoot('page-auth');
+    }
+
+    goToHomeOrRestaurantDetail() {
+        if (this.restaurantService.getActive()) {
+            this.nav.setRoot('page-restaurant-detail');
+        } else {
+            this.nav.setRoot('page-home');
+        }
     }
 }

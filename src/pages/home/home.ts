@@ -18,7 +18,6 @@ import { UsersFireService } from '../../providers/users-fire-service';
 })
 
 export class HomePage {
-
   restaurants: Observable<any>;
   searchKey: string = "";
   yourLocation: string = "463 Beacon Street Guest House";

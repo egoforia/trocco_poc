@@ -37,7 +37,7 @@
 	    </button>
 
 	    <ion-list class="user-list">
-	      <button menuClose ion-item (click)="openPage('page-home')">
+	      <button menuClose ion-item (click)="goToHomeOrRestaurantDetail()">
 	        <ion-icon item-left name="home"></ion-icon>
 	        Home
 	      </button>
@@ -47,10 +47,10 @@
 	        Minha conta
 	      </button>
 
-		  <button menuClose ion-item (click)="openPage('page-about')">
-			<ion-icon item-left name="help"></ion-icon>
-			Como Funciona
-		  </button>
+				<button menuClose ion-item (click)="openPage('page-about')">
+					<ion-icon item-left name="help"></ion-icon>
+					Como Funciona
+				</button>
 	    </ion-list>
 
 	  </ion-content>

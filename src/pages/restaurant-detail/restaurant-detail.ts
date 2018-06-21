@@ -38,7 +38,6 @@ export class RestaurantDetailPage {
         private dishCategoriesService: DishCategoriesService
         ) {
         try {
-            this.menuCtrl.enable(true);
             this.restaurant = this.restaurantService.getActive();
             this.dishes = this.restaurant.dishes;
             this.categories = this.dishCategoriesService.findAll(this.dishes);
