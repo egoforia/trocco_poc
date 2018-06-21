@@ -37,7 +37,6 @@
 		    </ion-thumbnail>
 		    <h3 ion-text color="dark" class="fw500">{{restaurant.title}}</h3>
 		    <p ion-text class="text-12x"><span ion-text color="secondary" class="fw700">{{restaurant.tags}}</span> ∙ <span ion-text color="primary">{{ restaurant.price }}</span></p>
-		    <p ion-text class="text-12x">Valor de entrada: {{restaurant.entrance_value | currency: 'R$'}}</p>
 				<ion-badge class="white-bg text-secondary" item-end>
 					<ion-icon name="star"></ion-icon>
 					{{ restaurant.rating | number:'1.1' }}

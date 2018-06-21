@@ -27,7 +27,6 @@ export class MyAccountPage {
       if (user) {
         this.usersService.getUser$(user.uid).subscribe((_user: any) => {
           this.user = JSON.parse(JSON.stringify(_user));
-          console.log(this.user)
         });
       }
 
