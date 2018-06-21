@@ -9,8 +9,8 @@
 	        <ion-list no-margin >
 	          <ion-item style="height: 110px;">
 
-		            <ion-avatar item-left *ngIf="(afAuth.authState | async) as user">
-		              <img src="{{ user.photoURL }}">
+		            <ion-avatar item-left *ngIf="user.picture">
+		              <img src="{{ user.picture }}">
 		            </ion-avatar>
 
 		            <h2 ion-text class="text-white fw700 text-15x" *ngIf="(afAuth.authState | async) as user">

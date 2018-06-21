@@ -16,13 +16,12 @@
 				<ion-grid no-padding fixed>
 					<ion-row no-padding>
 						<ion-col>
-							<img src="assets/img/avatar.jpeg">
-							<h2 class="fw500">João Firmino</h2>
-							<h3 ion-text color="light">Customer</h3>
-							<button ion-button icon-start block outline margin-top color="light">
+							<img src="{{user.picture}}" *ngIf="user.picture">
+							<h2 class="fw500">{{user.displayName}}</h2>
+							<!-- <button ion-button icon-start block outline margin-top color="light">
 								<ion-icon name="photos"></ion-icon>
 								Edit / Insert Avatar
-							</button>
+							</button> -->
 						</ion-col>
 					</ion-row>
 				</ion-grid>
@@ -33,18 +32,17 @@
 					<ion-col>
 						<div padding>
 							<ion-list>
-
 								<ion-item>
 									<ion-label color="dark" stacked>Full Name:</ion-label>
-									<ion-input type="text" placeholder="Ex..: Joe Doe" value="João Firmino"></ion-input>
+									<ion-input type="text" placeholder="Ex..: Joe Doe" [(ngModel)]="user.displayName"></ion-input>
 								</ion-item>
 
 								<ion-item>
 									<ion-label color="dark" stacked>Email:</ion-label>
-									<ion-input type="email" placeholder="Ex.: joe@doe.com" value="firminoata@gmail.com"></ion-input>
+									<ion-input type="email" placeholder="Ex.: joe@doe.com" [(ngModel)]="user.email"></ion-input>
 								</ion-item>
 
-								<ion-item>
+								<!-- <ion-item>
 									<ion-label color="dark" stacked>Address:</ion-label>
 									<ion-input type="text" placeholder="Ex.: Abey Road 5"></ion-input>
 								</ion-item>
@@ -94,25 +92,17 @@
 										<ion-label color="dark">Chef</ion-label>
 										<ion-radio value="chef"></ion-radio>
 									</ion-item>
-								</ion-list>
-
-								<ion-item>
+								 </ion-list>
+								 <ion-item>
 									<ion-label>Available to receive promo or app messages?</ion-label>
 								<ion-checkbox></ion-checkbox>
-							</ion-item>
+							 </ion-item> -->
 							</ion-list>
 						</div>
 
-						<button ion-button large full color="dark" (click)="sendData()">Edit</button>
+						<!-- <button ion-button large full color="dark" (click)="sendData()">Edit</button> -->
 					</ion-col>
 				</ion-row>
 			</ion-grid>
     </ion-card>
-
-    <div padding>
-      <p ion-text color="dark" no-margin>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum odio placeat incidunt nesciunt atque ratione quisquam, fugit omnis maxime adipisci excepturi dignissimos aliquam asperiores itaque unde sequi? Minus, quia, dolore?
-      </p>
-    </div>
-
 </ion-content>

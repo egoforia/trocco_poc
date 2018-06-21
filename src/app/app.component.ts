@@ -46,6 +46,11 @@ export class foodIonicApp {
       private usersService: UsersFireService,
       private restaurantService: RestaurantFireService
     ) {
+        this.user = {
+            picture: '',
+            displayName: '',
+            email: ''
+        }
         this.initializeApp();
         // this.initializeFirebase();
 

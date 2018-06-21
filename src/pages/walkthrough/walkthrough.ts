@@ -74,7 +74,7 @@ export class WalkthroughPage {
         this.slides.slideNext(300);
       }
     } else {
-      this.slides.slideNext(300)
+      this.slides.slideNext(300);
     }
   }
 
