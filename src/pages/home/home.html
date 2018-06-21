@@ -31,7 +31,7 @@
 	<ion-grid no-padding fixed>
 
 		<ion-list ion-row padding-horizontal>
-		  <button ion-item ion-col *ngFor="let restaurant of restaurants | async" (click)="openRestaurantDetail(restaurant)" col-12 col-md-6>
+		  <button ion-item ion-col *ngFor="let restaurant of restaurants | async" (click)="showConfirmEntranceValueAlert(restaurant)" col-12 col-md-6>
 		    <ion-thumbnail item-start>
 		        <img src="{{restaurant.thumbnail}}">
 		    </ion-thumbnail>

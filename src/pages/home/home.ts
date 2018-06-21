@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, AlertController, MenuController, ToastController, PopoverController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, MenuController, ToastController, PopoverController, ModalController, Platform } from 'ionic-angular';
 import { RestaurantFireService } from '../../providers/restaurant-fire-service';
 import { Observable } from 'rxjs/Observable';
 import { Firebase } from '@ionic-native/firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { UsersFireService } from '../../providers/users-fire-service';
 
 @IonicPage({
 	name: 'page-home',
@@ -23,15 +24,17 @@ export class HomePage {
   yourLocation: string = "463 Beacon Street Guest House";
 
   constructor(
+    public platform: Platform,
     public navCtrl: NavController,
     public menuCtrl: MenuController,
     public popoverCtrl: PopoverController,
-    public locationCtrl: AlertController,
+    public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
     public service: RestaurantFireService,
     public firebase: Firebase,
     public afAuth: AngularFireAuth,
+    private usersService: UsersFireService
   ) {
 		this.menuCtrl.swipeEnable(true, 'authenticated');
 		this.menuCtrl.enable(true);
@@ -94,7 +97,7 @@ export class HomePage {
 	}
 
   alertLocation() {
-    let changeLocation = this.locationCtrl.create({
+    let changeLocation = this.alertCtrl.create({
       title: 'Change Location',
       message: "Type your Address to change restaurant list in that area.",
       inputs: [
@@ -146,12 +149,39 @@ export class HomePage {
   ionViewDidLoad() {
     this.afAuth.authState.subscribe((user: any) => {
       this.saveUserDeviceToken(user);    
-    })
+    });
   }
 
   saveUserDeviceToken(user: any) {
-    this.firebase.getToken().then(token => {
-      this.usersService.addDeviceToken(user.uid, token);
+    this.platform.ready().then(() => {
+      if(this.platform.is('cordova')) {
+        this.firebase.getToken().then(token => {
+          this.usersService.addDeviceToken(user.uid, token);
+        });
+      }
     });
+  }
+
+  showConfirmEntranceValueAlert(restaurant) {
+    const confirm = this.alertCtrl.create({
+      title: `Para entrar nesse restaurante poderá ser adicionado um valor de entrada ao seu pedido. Você concorda?`,
+      message: '',
+      buttons: [
+        {
+          text: 'Voltar',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Concordo',
+          handler: () => {
+            console.log('Agree clicked');
+            this.openRestaurantDetail(restaurant);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }

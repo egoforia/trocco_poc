@@ -99,5 +99,4 @@ export class RestaurantListPage {
         });
         this.map.addLayer(this.markersGroup);
     }
-
 }

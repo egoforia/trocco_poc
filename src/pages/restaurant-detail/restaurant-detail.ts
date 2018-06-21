@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, ActionSheetController, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, ActionSheetController, NavController, NavParams, ToastController, MenuController} from 'ionic-angular';
 import {RestaurantFireService} from '../../providers/restaurant-fire-service';
 import {DishService} from '../../providers/dish-service-mock';
 import {CartService} from '../../providers/cart-service-mock';
@@ -10,7 +10,6 @@ import leaflet from 'leaflet';
 	name: 'page-restaurant-detail',
 	segment: 'restaurant'
 })
-
 @Component({
     selector: 'page-restaurant-detail',
     templateUrl: 'restaurant-detail.html'
@@ -35,9 +34,11 @@ export class RestaurantDetailPage {
         public restaurantService: RestaurantFireService,
         public dishService: DishService,
         public toastCtrl: ToastController,
+        private menuCtrl: MenuController,
         private dishCategoriesService: DishCategoriesService
         ) {
         try {
+            this.menuCtrl.enable(true);
             this.restaurant = this.restaurantService.getActive();
             this.dishes = this.restaurant.dishes;
             this.categories = this.dishCategoriesService.findAll(this.dishes);
