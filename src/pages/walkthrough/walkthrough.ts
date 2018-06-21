@@ -53,6 +53,8 @@ export class WalkthroughPage {
               this.user.has_guest = false;
             }
           });
+        }, (_e) => {
+          this.user.has_guest = false;
         });
       } else {
         this.shouldShowLoginSlide = true;
