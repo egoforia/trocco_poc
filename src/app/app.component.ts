@@ -97,13 +97,7 @@ export class foodIonicApp {
                             const guestSubs = this.restaurantService.getGuestSubscriber();
                             guestSubs.subscribe((guest: any) => {
                                 if(guest) {
-                                    if(guest.status != 'canceled' || guest.status != 'ok') {
-                                    this.rootPage = 'page-restaurant-detail';
-                                    } else {
-                                    this.rootPage = 'page-home';
-                                    }
-                                } else {
-                                    this.rootPage = 'page-home';
+                                    this.rootPage = 'page-check-number';
                                 }
                             });
                         }, (e: Error) => {

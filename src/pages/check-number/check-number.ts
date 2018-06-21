@@ -20,10 +20,10 @@ export class CheckNumberPage {
     this.restaurantService.getGuestSubscriber().subscribe((guest: any) => {
       if(guest) {
         if(guest.status == 'open') {
-          this.navCtrl.setRoot('page-restaurant-detail')
+          this.navCtrl.setRoot('page-restaurant-detail');
+        } else if (guest.status != 'waiting' && guest.status != 'open') {
+          this.navCtrl.setRoot('page-home');
         }
-      } else {
-        this.navCtrl.setRoot('page-home');
       }
     });
   }
