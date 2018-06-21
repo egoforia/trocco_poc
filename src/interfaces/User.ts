@@ -6,4 +6,5 @@ export default interface User {
     uid: string;
     emailVerified: boolean;
     photoUrl: string;
+    picture: string;
 }

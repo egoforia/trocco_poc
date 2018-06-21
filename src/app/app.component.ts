@@ -47,7 +47,7 @@ export class foodIonicApp {
       private restaurantService: RestaurantFireService
     ) {
         this.user = {
-            picture: '',
+            photoUrl: '',
             displayName: '',
             email: ''
         }

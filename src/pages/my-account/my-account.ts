@@ -18,7 +18,7 @@ export class MyAccountPage {
 
   constructor(public navCtrl: NavController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, public afAuth: AngularFireAuth, private usersService: UsersFireService) {
     this.user = {
-      picture: '',
+      photoUrl: '',
       displayName: '',
       email: ''
     }
