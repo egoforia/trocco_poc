@@ -8,7 +8,6 @@ import { RestaurantFireService } from '../providers/restaurant-fire-service'
 import { UsersFireService } from '../providers/users-fire-service';
 import { Observable } from 'rxjs/Observable';
 import { AngularFireAuth } from 'angularfire2/auth';
-import User from '../interfaces/User';
 
 export interface MenuItem {
     title: string;
@@ -34,7 +33,7 @@ export class foodIonicApp {
     accountMenuItems: Array<MenuItem>;
     helpMenuItems: Array<MenuItem>;
     items: Observable<any[]>;
-    user: User;
+    user: any;
 
     constructor(
       public platform: Platform,
@@ -92,7 +91,7 @@ export class foodIonicApp {
         this.statusBar.overlaysWebView(false);
         const authSubscription = this.afAuth.authState.subscribe((user: any) => {
             if(user) {
-                const verifyUserRG = this.usersService.getUser$(user.uid).subscribe((_user: any) => {
+                this.usersService.getUser$(user.uid).subscribe((_user: any) => {
                     this.user = JSON.parse(JSON.stringify(_user));
                     this.saveUserDeviceToken(this.user);
                     if(!this.user.phoneNumber) {
@@ -110,8 +109,6 @@ export class foodIonicApp {
                             this.logout();
                         });
                     }
-        
-                    verifyUserRG.unsubscribe();
                 });
             } else {
                 this.rootPage = 'page-walkthrough';
