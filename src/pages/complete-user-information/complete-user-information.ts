@@ -59,7 +59,7 @@ export class CompleteUserInformationPage {
             'rg': ['', [
                 Validators.required,
                 Validators.minLength(8),
-                validators.maxLength(9)
+                Validators.maxLength(9)
             ]],
             'phoneNumber': ['', [
                 Validators.required,
