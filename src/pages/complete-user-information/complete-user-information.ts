@@ -58,7 +58,8 @@ export class CompleteUserInformationPage {
         this.onCompleteUserInformationForm = this._fb.group({
             'rg': ['', [
                 Validators.required,
-                Validators.minLength(9)
+                Validators.minLength(8),
+                validators.maxLength(9)
             ]],
             'phoneNumber': ['', [
                 Validators.required,
