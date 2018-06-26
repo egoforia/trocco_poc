@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class RestaurantFireService {
-
-  // favoriteCounter: number = 0;
-  // favorites: Array<any> = [];
   restaurants: Observable<any>;
   active: any = {};
 
   constructor(private afDB: AngularFireDatabase, private afAuth: AngularFireAuth) {
     this.restaurants = this.afDB.list('estabelecimentos').valueChanges();
+    try {
+      this.getActive()
+    } catch(e) {}
   }
 
   today() {

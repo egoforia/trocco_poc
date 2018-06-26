@@ -26,12 +26,14 @@ export class CartFireService {
     // });
 
     try {
-      // const uid = this.afAuth.auth.currentUser.uid;
-      const today = new Date().toISOString().slice(0, 10);
-      const restaurant_id = this.restaurantService.getActive().id;
-
-      // this.ordersRef = this.afDB.list(`guests/${today}/${restaurant_id}/${uid}/orders`);
-      this.ordersRef = this.afDB.list(`orders/${restaurant_id}/${today}`)
+      this.afAuth.authState.subscribe(user => {
+        if (user) {
+          this.uid = user.uid
+          this.today = new Date().toISOString().slice(0, 10);
+          this.restaurant_id = this.restaurantService.getActive().id;
+          this.ordersRef = this.afDB.list(`orders/${this.restaurant_id}/${this.today}`)
+        }
+      });
     } catch (e) {
       console.error(e);
     }
@@ -47,6 +49,10 @@ export class CartFireService {
         return { dish_id: item.dish_id, quantity: item.quantity };
       })
     });
+  }
+
+  getGuest$() {
+    return this.afDB.object(`guests/${this.today}/${this.restaurant_id}/${this.uid}`).valueChanges();
   }
 
   getOrders() {
@@ -101,9 +107,9 @@ export class CartFireService {
   	// let order = this.orders[id - 1]
 		// let index = this.orders.indexOf(order);
 		// let order;
-  //   if (index > -1) {
-  //     this.orders[index];
-  //   }
+    //   if (index > -1) {
+    //     this.orders[index];
+    //   }
 
 		// for (let i in this.orders) {
 		// 	if (this.orders[i].id === order.id) {

@@ -18,6 +18,7 @@ export class OrdersFireService {
       const uid = this.afAuth.auth.currentUser.uid;
       const today = new Date().toISOString().slice(0, 10);
       const restaurant_id = this.restaurantService.getActive().id;
+      console.log(restaurant_id)
 
       this.ordersRef = this.afDB.list(`guests/${today}/${restaurant_id}/${uid}/orders`, ref => {
         return ref.orderByKey().limitToLast(1);

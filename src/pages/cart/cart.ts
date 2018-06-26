@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-// import { CartService } from '../../providers/cart-service-mock';
 import { CartFireService } from '../../providers/cart-fire-service';
 import { RestaurantFireService } from '../../providers/restaurant-fire-service';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 
@@ -19,8 +16,8 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class CartPage {
-
 	orders$: Observable<any>;
+	guest: any;
 
   constructor (
 		public navCtrl: NavController,
@@ -30,10 +27,11 @@ export class CartPage {
 		private afAuth: AngularFireAuth
 	) {
 
-  }
+	}
 
 	ionViewDidLoad() {
 		this.getOrders();
+		this.getGuest();
 	}
 
   removeOrder (order) {
@@ -44,11 +42,17 @@ export class CartPage {
     //     .catch(error => alert(JSON.stringify(error)));
   }
 
-  getOrders () {
+  getOrders() {
 		this.afAuth.authState.subscribe(user => {
 			this.orders$ = this.cartService.getOrders();
 		});
-  }
+	}
+	
+	getGuest() {
+		this.cartService.getGuest$().subscribe((guest: any) => {
+			this.guest = guest;
+		});
+	}
 
 	getTotalSubject() {
 		return this.cartService.totalSubject;
