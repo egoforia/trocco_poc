@@ -56,7 +56,7 @@ export class DishDetailPage {
 	canAddToOrder():boolean {
 		const lastOrder = this.ordersService.getLastOrder().getValue();
 
-		if (!lastOrder.status || lastOrder.status == 'finalized' || lastOrder.status == 'canceled')
+		if (!lastOrder.status || lastOrder.status == 'delivered' || lastOrder.status == 'canceled')
 			return true;
 		else
 			return false;

@@ -60,7 +60,7 @@ export class CartFireService {
       .map(orders => {
         // check if user can do checkout
         let canDoCheckout = orders.length > 0 && orders.filter((order: any) => {
-          return order.status != 'finalized' && order.status != 'canceled'
+          return order.status != 'delivered' && order.status != 'canceled'
         }).length == 0;
         this.canDoCheckoutSubject.next(canDoCheckout);
 
@@ -72,8 +72,8 @@ export class CartFireService {
           if(order.dishes != 0) {
             order.dishes.forEach(item => {
               item.dish = this.restaurantService.getDish(item.dish_id);
-              // sum to total if order has been finalized
-              if (order.status == 'finalized')
+              // sum to total if order has been delivered
+              if (order.status == 'delivered')
                 item.dish.subscribe(dish => {
                   this.addToTotal(dish.price * item.quantity);
                 });

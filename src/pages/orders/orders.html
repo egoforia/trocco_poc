@@ -26,7 +26,7 @@
           Adicione algo em seu pedido
         </button>
 
-        <div *ngIf="order.status == 'finalized'">
+        <div *ngIf="order.status == 'delivered'">
           <p>Seu pedido foi finalizdo</p>
           <button ion-button color="primary" icon-left tappable (click)="openRestaurantDetail()">
             Faça um novo pedido

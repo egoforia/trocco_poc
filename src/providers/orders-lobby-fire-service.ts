@@ -58,8 +58,8 @@ export class OrdersLobbyFireService {
     return this.getOrderRef(order_id).update({ status: 'ready' });
   }
 
-  setFinalized(order_id) {
-    return this.getOrderRef(order_id).update({ status: 'finalized' });
+  setDelivered(order_id) {
+    return this.getOrderRef(order_id).update({ status: 'delivered' });
   }
 
   setCanceled(order_id) {

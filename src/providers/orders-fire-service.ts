@@ -15,31 +15,35 @@ export class OrdersFireService {
     });
 
     try {
-      const uid = this.afAuth.auth.currentUser.uid;
-      const today = new Date().toISOString().slice(0, 10);
-      const restaurant_id = this.restaurantService.getActive().id;
-      console.log(restaurant_id)
+      const authSubscription = this.afAuth.authState.subscribe((user: any) => {
+        authSubscription.unsubscribe();
+        const uid = this.afAuth.auth.currentUser.uid;
+        const today = new Date().toISOString().slice(0, 10);
+        const restaurant_id = this.restaurantService.getActive().id;
+        console.log(`orders/${restaurant_id}/${today}/${uid}`);
 
-      this.ordersRef = this.afDB.list(`guests/${today}/${restaurant_id}/${uid}/orders`, ref => {
-        return ref.orderByKey().limitToLast(1);
-      });
-
-      this.ordersRef.valueChanges()
-        .map(orders => {
-          console.log('mapped orders: ', orders);
-
-          return orders.map((order: any) => {
-            return this.getDishesObservables(order);
-          });
-        })
-        .subscribe(orders => {
-          console.log('subscribed orders: ', orders);
-
-          if (orders[0])
-            this.ordersSubject.next(orders[0]);
+        this.ordersRef = this.afDB.list(`orders/${restaurant_id}/${today}`, ref => {
+          // return ref.orderByKey().limitToLast(1);
+          return ref.orderByChild('user_id').equalTo(uid).limitToLast(1);
         });
 
-        console.log('this.ordersRef: ', this.ordersRef);
+        this.ordersRef.valueChanges()
+          .map(orders => {
+            console.log('mapped orders: ', orders);
+
+            return orders.map((order: any) => {
+              return this.getDishesObservables(order);
+            });
+          })
+          .subscribe(orders => {
+            console.log('subscribed orders: ', orders);
+
+            if (orders[0])
+              this.ordersSubject.next(orders[0]);
+          });
+
+          console.log('this.ordersRef: ', this.ordersRef);
+        });
     } catch (e) {
       console.error(e);
     }
@@ -47,8 +51,8 @@ export class OrdersFireService {
 
   addDish(dish, quantity) {
     let order = this.ordersSubject.getValue();
-    // reset order if it has been finalized or canceled
-    if (order.status == 'finalized' || order.status == 'canceled')
+    // reset order if it has been delivered or canceled
+    if (order.status == 'delivered' || order.status == 'canceled')
       order = {dishes: []};
 
     order.dishes.push({dish: new BehaviorSubject<any>(dish), quantity: quantity, dish_id: dish.id});
