@@ -8,13 +8,13 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class CartFireService {
-
   ordersRef: AngularFireList<{}>;
-
   userId: String;
-
   totalSubject:         BehaviorSubject<number>   = new BehaviorSubject<number>(0);
   canDoCheckoutSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  uid: String;
+  today: String;
+  restaurant_id: number;
 
   constructor(private afDB: AngularFireDatabase, private restaurantService: RestaurantFireService, private afAuth: AngularFireAuth) {
     // async solution
