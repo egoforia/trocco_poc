@@ -29,7 +29,9 @@ export class CartFireService {
           this.uid = user.uid
           this.today = new Date().toISOString().slice(0, 10);
           this.restaurant_id = this.restaurantService.getActive().id;
-          this.ordersRef = this.afDB.list(`orders/${this.restaurant_id}/${this.today}`)
+          this.ordersRef = this.afDB.list(`orders/${this.restaurant_id}/${this.today}`, ref => {
+            return ref.orderByChild('user_id').equalTo(this.uid);
+          });
         }
       });
     } catch (e) {
@@ -67,7 +69,7 @@ export class CartFireService {
         return orders.map((order: any) => {
           this.clearTotal();
 
-          if(order.dishes != 0) {
+          try {
             order.dishes.forEach(item => {
               item.dish = this.restaurantService.getDish(item.dish_id);
               // sum to total if order has been delivered
@@ -76,6 +78,8 @@ export class CartFireService {
                   this.addToTotal(dish.price * item.quantity);
                 });
             });
+          } catch (e) {
+            console.error(e);
           }
 
           return order;
