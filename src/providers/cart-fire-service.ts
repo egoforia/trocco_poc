@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import { RestaurantFireService } from './restaurant-fire-service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
