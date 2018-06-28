@@ -60,7 +60,7 @@
   				<ion-card class="primary-bg" *ngIf="(getTotalSubject() | async) as total">
   					<ion-card-content>
   						<p ion-text color="light">Total Order Value</p>
-  						<h2 ion-text class="text-white fw700">{{ total | currency }}</h2>
+  						<h2 ion-text class="text-white fw700">{{ total + guest.entrance_value | currency }}</h2>
   					</ion-card-content>
   				</ion-card>
         </div>
