@@ -26,11 +26,11 @@ export class CartFireService {
     try {
       this.afAuth.authState.subscribe(user => {
         if (user) {
-          this.uid = user.uid
+          this.uid = user.uid;
           this.today = new Date().toISOString().slice(0, 10);
           this.restaurant_id = this.restaurantService.getActive().id;
           this.ordersRef = this.afDB.list(`orders/${this.restaurant_id}/${this.today}`, ref => {
-            return ref.orderByChild('user_id').equalTo(this.uid);
+            return ref.orderByChild('user_id').equalTo(user.uid);
           });
         }
       });
