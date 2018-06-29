@@ -26,26 +26,26 @@ export class RestaurantDetailPage {
     verifyPage: any;
     selectedCategory: String = '';
 
-    constructor(
-        public actionSheetCtrl: ActionSheetController,
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public cartService: CartService,
-        public restaurantService: RestaurantFireService,
-        public dishService: DishService,
-        public toastCtrl: ToastController,
-        private menuCtrl: MenuController,
-        private dishCategoriesService: DishCategoriesService
-        ) {
-        try {
-            this.menuCtrl.enable(true);
-            this.restaurant = this.restaurantService.getActive();
-            this.dishes = this.restaurant.dishes;
-            this.categories = this.dishCategoriesService.findAll(this.dishes);
-            this.redirectToCorrectPage();
-        } catch(e) {
-            this.navCtrl.setRoot('page-home');
-        }
+    constructor (
+      public actionSheetCtrl: ActionSheetController,
+      public navCtrl: NavController,
+      public navParams: NavParams,
+      public cartService: CartService,
+      public restaurantService: RestaurantFireService,
+      public dishService: DishService,
+      public toastCtrl: ToastController,
+      private menuCtrl: MenuController,
+      private dishCategoriesService: DishCategoriesService
+    ) {
+      try {
+          this.menuCtrl.enable(true);
+          this.restaurant = this.restaurantService.getActive();
+          this.dishes = this.restaurant.dishes;
+          this.categories = this.dishCategoriesService.findAll(this.dishes);
+          this.redirectToCorrectPage();
+      } catch(e) {
+          this.navCtrl.setRoot('page-home');
+      }
     }
 
     openDishDetail(dish, restaurant) {
@@ -74,10 +74,6 @@ export class RestaurantDetailPage {
                     }
             }
         });
-    }
-
-    openCart() {
-        this.navCtrl.push('page-cart');
     }
 
     openCheck() {
