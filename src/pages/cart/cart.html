@@ -63,6 +63,10 @@
   						<h2 ion-text class="text-white fw700">{{ total + guest.entrance_value | currency }}</h2>
   					</ion-card-content>
   				</ion-card>
+          <button ion-button full large color="dark" no-margin icon-right (click)="openCheckout()" *ngIf="(getCanDoCheckoutSubject() | async) as canDoCheckout">
+        		Checkout
+        		<ion-icon name="card"></ion-icon>
+        	</button>
         </div>
         <ng-template #loadingOrders><ion-spinner></ion-spinner>Carregando Pedidos...</ng-template>
 			</ion-col>
@@ -71,10 +75,7 @@
 </ion-content>
 
 <ion-footer class="no-padding">
-	<button ion-button full large color="dark" no-margin icon-right (click)="openCheckout()" *ngIf="(getCanDoCheckoutSubject() | async) as canDoCheckout">
-		Checkout
-		<ion-icon name="card"></ion-icon>
-	</button>
+
 
   <ion-grid no-padding fixed>
 		<ion-row no-padding>
